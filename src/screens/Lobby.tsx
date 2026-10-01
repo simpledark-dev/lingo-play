@@ -273,15 +273,19 @@ export function Lobby() {
   }
 
   return (
-    <div className="flex h-full gap-5 desk:p-5">
-      <main className="scroll-slim min-w-0 flex-1 overflow-y-auto px-3 pt-3 pb-4 desk:p-0">
-        {/* <div className="overflow-hidden rounded-2xl desk:rounded-[22px]">
+    <div className="relative h-full overflow-hidden">
+      <img src="/assets/game-bg.jpg" alt="" className="absolute inset-0 h-full w-full object-cover" />
+      <div className="absolute inset-0 bg-gradient-to-b from-[#0a1124]/82 via-[#0a1124]/74 to-[#0a1124]/92" />
+
+      <div className="relative flex h-full gap-5 desk:p-5">
+        <main className="scroll-slim min-w-0 flex-1 overflow-y-auto px-3 pt-3 pb-4 desk:p-0">
+        <div className="overflow-hidden rounded-2xl desk:rounded-[22px]">
           <img
             src="/assets/lobby-banner.png"
             alt="Play together. Learn faster. Join live games and climb the global leaderboard."
             className="block aspect-[928/240] w-full scale-[1.012] object-cover"
           />
-        </div> */}
+        </div>
 
         <div className="mt-3 grid grid-cols-2 gap-2.5 sm:grid-cols-3 desk:mt-4 desk:gap-4">
           <ActionCard
@@ -375,17 +379,18 @@ export function Lobby() {
           {loading ? <Loading label="Loading rooms..." className="col-span-full" /> : rooms.map((r) => <RoomCard key={r.id} w={w} room={r} now={now} />)}
           {!loading && rooms.length === 0 && <Empty />}
         </div>
-        <div className="mt-3 text-center text-[12.500px] text-mute">
-          {rooms.length} of {all.length} rooms
-        </div>
-      </main>
+          <div className="mt-3 text-center text-[12.500px] text-soft drop-shadow-[0_1px_2px_rgba(0,0,0,0.9)]">
+            {rooms.length} of {all.length} rooms
+          </div>
+        </main>
 
-      <aside className="hidden w-[312px] shrink-0 flex-col gap-4 desk:flex">
-        <MyCard />
-        <div className="min-h-0 flex-1">
-          <OnlinePanel />
-        </div>
-      </aside>
+        <aside className="hidden w-[312px] shrink-0 flex-col gap-4 desk:flex">
+          <MyCard />
+          <div className="min-h-0 flex-1">
+            <OnlinePanel />
+          </div>
+        </aside>
+      </div>
     </div>
   )
 }

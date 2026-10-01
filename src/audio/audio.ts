@@ -30,7 +30,7 @@ let fade = 0
 function syncMusic() {
   const on = musicWanted && getSettings().music && unlocked
   if (on && !music) {
-    music = new Audio('/assets/music/airport-lounge.mp3')
+    music = new Audio('/assets/music/lobby-time.mp3')
     music.loop = true
     music.volume = 0
   }
