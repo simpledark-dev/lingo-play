@@ -5,6 +5,7 @@ import { emit, toast } from './events'
 import {
   addPlayer,
   botsEcho,
+  chooseSentence,
   createRoom,
   forfeit,
   pushReaction,
@@ -199,6 +200,15 @@ export function submitAnswer(roomId: number, v: number | string) {
   const r = w.rooms[roomId]
   if (!r || !w.meId || r.status !== 'playing' || !r.game || !r.players.includes(w.meId)) return
   recordAnswer(r, w.meId, v, Date.now(), r.game.replays)
+  commit()
+}
+
+/** Hot Seat: the human, as challenger, picks the sentence for the player in the seat */
+export function pickSentence(roomId: number, choice: number) {
+  const w = getWorld()
+  const r = w.rooms[roomId]
+  if (!r || !w.meId || r.status !== 'playing' || !r.players.includes(w.meId)) return
+  chooseSentence(w, r, w.meId, choice, Date.now())
   commit()
 }
 

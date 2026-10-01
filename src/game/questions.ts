@@ -2,9 +2,9 @@ import { SENTENCES } from '../data/sentences'
 import { VOCAB, type VocabEntry } from '../data/vocab'
 import { mulberry32, shuffle, type Rng } from '../lib/rng'
 import { TOPIC_IDS } from './config'
-import type { Difficulty, ListeningQuestion, Room, VocabQuestion } from './types'
+import type { Difficulty, ListeningQuestion, Room, RoomTopic, VocabQuestion } from './types'
 
-const LEVEL_WEIGHTS: Record<Difficulty, [number, number, number]> = {
+export const LEVEL_WEIGHTS: Record<Difficulty, [number, number, number]> = {
   easy: [1, 0.45, 0],
   medium: [0.35, 1, 0.45],
   hard: [0, 0.45, 1],
@@ -72,6 +72,38 @@ function buildListening(room: Room, r: Rng): ListeningQuestion[] {
     .map((c) => ({ text: c.text, k: c.level + r() * 1.4 }))
     .sort((a, b) => a.k - b.k)
     .map((c) => ({ text: c.text }))
+}
+
+/** every sentence a room can draw from, with its level (0 easy, 1 medium, 2 hard) */
+export function sentencePool(topic: RoomTopic) {
+  const topics = topic === 'random' ? TOPIC_IDS : [topic]
+  const pool: { text: string; level: number }[] = []
+  for (const t of topics) SENTENCES[t].forEach((list, i) => list.forEach((text) => pool.push({ text, level: i })))
+  return pool
+}
+
+/** One vocabulary question at a given word level (1 to 3), avoiding words already used in this game. */
+export function vocabQuestionAt(topic: RoomTopic, level: number, used: Set<string>, kind?: VocabQuestion['kind']): VocabQuestion {
+  const topics = topic === 'random' ? TOPIC_IDS : [topic]
+  const pool: { e: VocabEntry; topic: string }[] = []
+  for (const t of topics) for (const e of VOCAB[t]) pool.push({ e, topic: t })
+  const fresh = pool.filter((p) => !used.has(p.e[0]))
+  const candidates = fresh.filter((p) => p.e[2] === level)
+  const from = candidates.length ? candidates : fresh.length ? fresh : pool
+  const { e, topic: t } = from[Math.floor(Math.random() * from.length)]
+  const k = kind ?? (Math.random() < 0.62 ? 'en-vi' : 'vi-en')
+  const sameTopic = shuffle(pool.filter((p) => p.topic === t && p.e !== e)).sort(
+    (a, b) => Math.abs(a.e[2] - e[2]) - Math.abs(b.e[2] - e[2]),
+  )
+  const options = shuffle([e, ...shuffle(sameTopic.slice(0, 5)).slice(0, 3).map((p) => p.e)])
+  return {
+    kind: k,
+    prompt: k === 'en-vi' ? e[0] : e[1],
+    choices: options.map((o) => (k === 'en-vi' ? o[1] : o[0])),
+    answer: options.indexOf(e),
+    en: e[0],
+    vi: e[1],
+  }
 }
 
 const cache = new Map<string, VocabQuestion[] | ListeningQuestion[]>()

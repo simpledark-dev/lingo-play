@@ -65,7 +65,7 @@ function fakeRecent(p: Player, ids: string[], now: number) {
   let at = now - rand(20 * MIN, 5 * 60 * MIN)
   const n = randInt(5, 8)
   for (let i = 0; i < n; i++) {
-    const mode: Mode = chance(0.55) ? 'vocab' : 'listening'
+    const mode = pick<Mode>(['vocab', 'vocab', 'listening', 'listening', 'spotlight', 'hotseat'])
     const of = pick([2, 2, 3, 4, 4])
     const idx = 29 - i
     const delta = p.history[idx] - p.history[idx - 1]

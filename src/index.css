@@ -209,3 +209,48 @@
     transform: translateY(-2px);
   }
 }
+
+/* the light on whoever is on stage in the turn-based games */
+.spot-beam {
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 330px;
+  pointer-events: none;
+  background: linear-gradient(180deg, rgba(var(--beam), 0.34), rgba(var(--beam), 0.1) 62%, transparent);
+  clip-path: polygon(45% 0, 55% 0, 84% 100%, 16% 100%);
+  filter: blur(7px);
+  animation: beam-on 0.7s ease-out;
+}
+.spot-halo {
+  position: absolute;
+  inset: -16px;
+  border-radius: 999px;
+  pointer-events: none;
+  background: radial-gradient(closest-side, rgba(var(--beam), 0.5), transparent);
+  animation: halo 2.4s ease-in-out infinite;
+}
+@keyframes beam-on {
+  0% {
+    opacity: 0;
+  }
+  35% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.55;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+@keyframes halo {
+  0%,
+  100% {
+    transform: scale(0.94);
+    opacity: 0.75;
+  }
+  50% {
+    transform: scale(1.06);
+    opacity: 1;
+  }
+}

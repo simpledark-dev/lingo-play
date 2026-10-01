@@ -24,10 +24,7 @@ export function MyCard() {
             <span className="truncate text-[17px] font-extrabold">{p.name}</span>
             <Flag country={p.country} size={20} />
           </div>
-          <div className="tabular mt-0.5 flex items-center gap-1.5 text-[18px] font-extrabold text-gold">
-            <Crown size={19} fill="currentColor" />
-            {fmt(p.rating)}
-          </div>
+          <div className="tabular mt-0.5 text-[18px] font-extrabold text-gold">{fmt(p.rating)}</div>
         </div>
         <button
           onClick={() => setUi({ profile: 'me' })}

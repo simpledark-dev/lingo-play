@@ -1,8 +1,8 @@
-import { BookA, Headphones, LoaderCircle, Signal } from 'lucide-react'
+import { Armchair, BookA, Castle, Headphones, LoaderCircle, Signal, Spotlight, type LucideIcon } from 'lucide-react'
 import { useId, type ReactNode } from 'react'
-import { DIFFICULTIES } from '../game/config'
+import { DIFFICULTIES, HAS_LEVEL } from '../game/config'
 import { tierOf, type Tier } from '../game/tiers'
-import type { Country, Difficulty, Mode } from '../game/types'
+import type { Country, Difficulty, Mode, Room } from '../game/types'
 
 export const cx = (...parts: (string | false | null | undefined)[]) => parts.filter(Boolean).join(' ')
 
@@ -117,10 +117,14 @@ export function TierChip({ rating, className }: { rating: number; className?: st
 const MODE_STYLE: Record<Mode, string> = {
   listening: 'from-[#9b6bff] to-[#6a3be0]',
   vocab: 'from-[#3ed598] to-[#1f9a68]',
+  spotlight: 'from-[#ffcf4a] to-[#f08c1a]',
+  hotseat: 'from-[#ff7a7a] to-[#d93a5a]',
+  tower: 'from-[#5cc8ff] to-[#2a7bd6]',
 }
+const MODE_ICON: Record<Mode, LucideIcon> = { listening: Headphones, vocab: BookA, spotlight: Spotlight, hotseat: Armchair, tower: Castle }
 
 export function ModeIcon({ mode, size = 40 }: { mode: Mode; size?: number }) {
-  const Icon = mode === 'listening' ? Headphones : BookA
+  const Icon = MODE_ICON[mode]
   return (
     <span
       className={cx(
@@ -151,6 +155,17 @@ export function DifficultyChip({ difficulty, className }: { difficulty: Difficul
     >
       <Signal size={14} strokeWidth={3} />
       {DIFFICULTIES[difficulty].name}
+    </span>
+  )
+}
+
+/** the level a room plays at; Hot Seat and Tower Climb change level from turn to turn */
+export function LevelChip({ room, className }: { room: Room; className?: string }) {
+  if (HAS_LEVEL[room.mode]) return <DifficultyChip difficulty={room.difficulty} className={className} />
+  return (
+    <span className={cx('inline-flex items-center gap-1.5 rounded-lg border border-[#33437a] bg-[#1b2547] px-2.5 py-1 text-[13px] font-extrabold text-[#a9bcf5]', className)}>
+      <Signal size={14} strokeWidth={3} />
+      {room.mode === 'tower' ? 'Rising' : 'Mixed'}
     </span>
   )
 }

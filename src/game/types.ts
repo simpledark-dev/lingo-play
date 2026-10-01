@@ -1,4 +1,6 @@
-export type Mode = 'vocab' | 'listening'
+export type Mode = 'vocab' | 'listening' | 'spotlight' | 'hotseat' | 'tower'
+/** what a game trains; every mode feeds one of these two ratings */
+export type Skill = 'vocab' | 'listening'
 export type Difficulty = 'easy' | 'medium' | 'hard'
 export type TopicId = 'family' | 'nature' | 'transport' | 'food' | 'travel' | 'daily'
 export type RoomTopic = TopicId | 'random'
@@ -25,7 +27,7 @@ export interface Player {
   bot: boolean
   rating: number
   peak: number
-  skills: Record<Mode, number>
+  skills: Record<Skill, number>
   games: number
   wins: number
   losses: number
@@ -77,9 +79,40 @@ export interface Plan {
   segs?: TypingSeg[]
 }
 
+/**
+ * One turn of a turn-based game (Spotlight, Hot Seat, Tower Climb): a single player performs
+ * while the rest of the table watches.
+ */
+export interface Turn {
+  /** the player on stage */
+  pid: string
+  kind: 'listen' | 'vocab'
+  /** 0 easy, 1 medium, 2 hard, 3 very hard: drives bot accuracy, speech speed and points */
+  level: number
+  secs: number
+  /** the sentence to type; in Hot Seat it is only set once the challenger has picked */
+  text?: string
+  vq?: VocabQuestion
+  // Hot Seat
+  picker?: string
+  options?: { text: string; level: number }[]
+  picked?: number
+  /** points the challenger earned for what the player missed */
+  bonus?: number
+  // Tower Climb
+  /** the floor this turn is trying to reach */
+  floor?: number
+  boss?: boolean
+  passed?: boolean
+  /** the team earned a life by reaching a checkpoint */
+  gained?: boolean
+  /** the player left before finishing the turn */
+  void?: boolean
+}
+
 export interface Game {
   round: number
-  phase: 'intro' | 'question' | 'reveal'
+  phase: 'intro' | 'pick' | 'question' | 'reveal'
   start: number
   end: number
   scores: Record<string, number>
@@ -89,6 +122,13 @@ export interface Game {
   left: string[]
   /** replays used by the human this round */
   replays: number
+  // turn-based modes only
+  turns?: Turn[]
+  /** seating order the turns rotate through */
+  order?: string[]
+  /** Tower Climb: floors cleared so far and shared lives left */
+  floor?: number
+  lives?: number
 }
 
 export interface Reaction {
@@ -105,6 +145,10 @@ export interface GameResult {
   correct: Record<string, number>
   deltas: Record<string, number>
   before: Record<string, number>
+  /** turns each player took (turn-based modes) */
+  turns?: Record<string, number>
+  /** Tower Climb outcome: the team wins or loses together */
+  tower?: { won: boolean; floor: number; top: number }
 }
 
 export interface Room {

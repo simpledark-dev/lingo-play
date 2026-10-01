@@ -2,14 +2,14 @@ import { ChevronDown, Crown } from 'lucide-react'
 import { useState } from 'react'
 import { MODES } from '../game/config'
 import { TIERS, tierIndex, tierOf } from '../game/tiers'
-import type { Mode, Player } from '../game/types'
+import type { Player, Skill } from '../game/types'
 import { useLoading } from '../lib/hooks'
 import { setUi } from '../lib/ui'
 import { me, useWorld } from '../sim/store'
 import { Avatar } from '../ui/Avatar'
 import { cx, Flag, fmt, Loading, ProgressBar, RankBadge, TierChip } from '../ui/bits'
 
-type Board = 'overall' | Mode
+type Board = 'overall' | Skill
 
 const ratingFor = (p: Player, board: Board) => (board === 'overall' ? p.rating : p.skills[board])
 

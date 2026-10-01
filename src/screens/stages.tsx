@@ -4,7 +4,7 @@ import { isUnlocked, sfx, speak, stopSpeaking, whenUnlocked } from '../audio/aud
 import { MAX_REPLAYS, REPLAY_COST, TTS_RATE } from '../game/config'
 import { listeningQ, vocabQ } from '../game/questions'
 import { diffWords, verdict } from '../game/scoring'
-import type { Answer, Game, Plan, Player, Reaction, Room, World } from '../game/types'
+import type { Answer, Game, Plan, Player, Reaction, Room, VocabQuestion, World } from '../game/types'
 import { setUi } from '../lib/ui'
 import { submitAnswer, takeReplay } from '../sim/actions'
 import { typedChars } from '../sim/rooms'
@@ -41,7 +41,7 @@ export const lastReaction = (room: Room, pid: string) => {
   return undefined
 }
 
-function Verdict({ acc, pts, compact }: { acc: number; pts: number; compact?: boolean }) {
+export function Verdict({ acc, pts, compact }: { acc: number; pts: number; compact?: boolean }) {
   const v = verdict(acc)
   const Icon = v.tone === 'good' ? CircleCheck : v.tone === 'warn' ? TriangleAlert : CircleX
   return (
@@ -101,12 +101,28 @@ function maskTyping(plan: Plan | undefined, now: number) {
 
 // ---------------------------------------------------------------- vocabulary
 
-export function VocabStage({ w, room, game, now, playing }: StageProps) {
-  const q = vocabQ(room, game.round)
+export function VocabStage({
+  w,
+  room,
+  game,
+  now,
+  playing,
+  question,
+  solo,
+  secs,
+}: StageProps & {
+  /** turn-based modes pass the question and the one player allowed to answer it */
+  question?: VocabQuestion
+  solo?: string
+  secs?: number
+}) {
+  const q = question ?? vocabQ(room, game.round)
   const answers = game.answers[game.round] ?? {}
   const mine = w.meId ? answers[w.meId] : undefined
   const reveal = game.phase === 'reveal'
-  const canAnswer = playing && !reveal && !mine
+  const myTurn = !solo || solo === w.meId
+  const canAnswer = playing && myTurn && !reveal && !mine
+  const actor = solo ? w.players[solo] : null
   const roomId = room.id
 
   useEffect(() => {
@@ -120,7 +136,7 @@ export function VocabStage({ w, room, game, now, playing }: StageProps) {
     return () => window.removeEventListener('keydown', onKey)
   }, [canAnswer, roomId, q.choices.length])
 
-  const total = room.secs * 1000
+  const total = (secs ?? room.secs) * 1000
   const left = reveal ? 0 : Math.max(0, Math.min(1, (game.end - now) / total))
 
   return (
@@ -199,9 +215,18 @@ export function VocabStage({ w, room, game, now, playing }: StageProps) {
               {q.en} = <span lang="vi">{q.vi}</span>
             </span>
           )
+        ) : solo && !myTurn ? (
+          <span className="flex items-center gap-2 text-soft">
+            {answers[solo] ? `${actor?.name ?? 'They'} locked in an answer` : `Only ${actor?.name ?? 'the player on stage'} can answer`}
+            <span className="typing-dots">
+              <span />
+              <span />
+              <span />
+            </span>
+          </span>
         ) : mine ? (
           <span className="flex items-center gap-2">
-            Answer locked in. Waiting for the others
+            Answer locked in{solo ? '' : '. Waiting for the others'}
             <span className="typing-dots">
               <span />
               <span />

@@ -9,8 +9,9 @@ import { go, setUi } from '../lib/ui'
 import { invitePlayer, joinRoom, leaveCurrentRoom, rematch, sendReaction, startRoom, watchRoom } from '../sim/actions'
 import { getWorld, rankings, useWorld } from '../sim/store'
 import { Avatar } from '../ui/Avatar'
-import { cx, DifficultyChip, Flag, fmt, Loading, ModeIcon, ordinal, ProgressBar, RankBadge, Spinner } from '../ui/bits'
+import { cx, LevelChip, Flag, fmt, Loading, ModeIcon, ordinal, ProgressBar, RankBadge, Spinner } from '../ui/bits'
 import { Modal } from '../ui/Modal'
+import { PartyStage, TowerColumn, TurnQueue } from './party'
 import { lastReaction, ListeningPlayerCard, ListeningStage, ReactionBubble, VocabPlayerCard, VocabStage } from './stages'
 
 const panel = 'rounded-2xl border border-white/10 bg-[#0b1426]/88 backdrop-blur-md'
@@ -36,7 +37,7 @@ function GameInfo({ room }: { room: Room }) {
       </div>
       <div className="mt-3 flex flex-wrap items-center gap-1.5 text-[12.500px] text-soft">
         <span className="rounded-lg bg-white/[0.07] px-2 py-1">{TOPICS[room.topic]}</span>
-        <DifficultyChip difficulty={room.difficulty} className="!px-2 !py-[3px] !text-[12px]" />
+        <LevelChip room={room} className="!px-2 !py-[3px] !text-[12px]" />
         <span className="rounded-lg bg-white/[0.07] px-2 py-1">
           {room.rounds} {mode.unit}
         </span>
@@ -62,7 +63,7 @@ function ReactionButtons({ room, compact }: { room: Room; compact?: boolean }) {
   }
   return (
     <div className={cx(compact ? 'no-scrollbar flex gap-2 overflow-x-auto px-3 py-2.5' : 'flex flex-wrap gap-1.5')}>
-      {REACTIONS.map((text) => (
+      {REACTIONS[room.mode].map((text) => (
         <button
           key={text}
           onClick={() => send(text)}
@@ -266,7 +267,7 @@ function RoundHeader({ w, room, game, now, playing }: { w: World; room: Room; ga
           })}
         </div>
       </div>
-      <DifficultyChip difficulty={room.difficulty} className="hidden sm:inline-flex" />
+      <LevelChip room={room} className="hidden sm:inline-flex" />
       <div className="hidden h-9 w-px bg-white/10 sm:block" />
       <div className={cx('tabular flex w-[74px] items-center justify-end gap-2 text-[24px] font-black sm:w-[96px] sm:text-[30px]', urgent ? 'text-rose' : 'text-[#f9b550]')}>
         <Timer size={26} strokeWidth={2.4} className={cx('text-white', urgent && 'animate-pulse')} />
@@ -301,7 +302,7 @@ function Intro({ w, room, game, now }: { w: World; room: Room; game: Game; now: 
         })}
       </div>
       <p className="mt-6 max-w-[380px] text-[14px] text-soft">
-        {room.mode === 'vocab' ? 'Pick the right meaning. Faster answers score more points.' : 'Listen to each sentence and type exactly what you hear.'}
+        {MODES[room.mode].how}
       </p>
     </div>
   )
@@ -315,6 +316,7 @@ function Playing({ w, room, game, now, playing }: { w: World; room: Room; game: 
   const props = { w, room, game, now, playing }
 
   if (game.phase === 'intro') return <Intro w={w} room={room} game={game} now={now} />
+  if (MODES[room.mode].turns) return <PartyStage {...props} />
 
   return (
     <>
@@ -417,6 +419,7 @@ function Waiting({ w, room, now, playing }: { w: World; room: Room; now: number;
   const seats = Array.from({ length: room.max }, (_, i) => room.players[i] ?? null)
   const startsIn = room.startAt != null ? Math.max(0, Math.ceil((room.startAt - now) / 1000)) : null
   const canSit = !playing && room.players.length < room.max && !room.priv
+  const seatWidth = room.max > 4 ? 'sm:w-[128px]' : 'sm:w-[148px]'
 
   return (
     <div className={cx(panel, 'mx-auto my-auto flex w-full max-w-[780px] flex-col items-center px-4 py-7 text-center sm:px-8 sm:py-10')}>
@@ -425,7 +428,7 @@ function Waiting({ w, room, now, playing }: { w: World; room: Room; now: number;
       <p className="mt-1 max-w-[420px] text-[14.500px] text-soft">{MODES[room.mode].blurb}</p>
       <div className="mt-3 flex flex-wrap items-center justify-center gap-2 text-[13.500px] text-soft">
         <span className="rounded-lg bg-white/[0.08] px-2.5 py-1">{TOPICS[room.topic]}</span>
-        <DifficultyChip difficulty={room.difficulty} />
+        <LevelChip room={room} />
         <span className="rounded-lg bg-white/[0.08] px-2.5 py-1">
           {room.rounds} {MODES[room.mode].unit}
         </span>
@@ -435,7 +438,7 @@ function Waiting({ w, room, now, playing }: { w: World; room: Room; now: number;
         </span>
       </div>
 
-      <div className="mt-7 grid w-full max-w-[640px] grid-cols-2 gap-3 sm:flex sm:justify-center">
+      <div className="mt-7 grid w-full max-w-[700px] grid-cols-2 gap-3 sm:flex sm:justify-center">
         {seats.map((pid, i) => {
           const p = pid ? w.players[pid] : null
           if (!p)
@@ -444,7 +447,7 @@ function Waiting({ w, room, now, playing }: { w: World; room: Room; now: number;
                 key={`empty-${i}`}
                 disabled={!playing}
                 onClick={() => setInviting(true)}
-                className="flex h-[168px] flex-col items-center justify-center gap-2 rounded-2xl border-2 border-dashed border-white/15 bg-white/[0.03] text-mute transition enabled:hover:border-azure-2 enabled:hover:text-white sm:w-[148px]"
+                className={cx('flex h-[168px] flex-col items-center justify-center gap-2 rounded-2xl border-2 border-dashed border-white/15 bg-white/[0.03] text-mute transition enabled:hover:border-azure-2 enabled:hover:text-white', seatWidth)}
               >
                 <span className="flex h-14 w-14 items-center justify-center rounded-full border-2 border-dashed border-current">
                   {playing ? <UserPlus size={22} /> : <Plus size={22} />}
@@ -458,12 +461,18 @@ function Waiting({ w, room, now, playing }: { w: World; room: Room; now: number;
               key={p.id}
               onClick={() => setUi({ profile: p.id })}
               className={cx(
-                'animate-pop relative flex h-[168px] flex-col items-center justify-center rounded-2xl border-2 bg-[#131d38]/90 px-2 transition hover:bg-[#182548] sm:w-[148px]',
+                'animate-pop relative flex h-[168px] flex-col items-center justify-center rounded-2xl border-2 bg-[#131d38]/90 px-2 transition hover:bg-[#182548]',
+                seatWidth,
                 p.id === w.meId ? 'border-gold/80' : 'border-[#2b4fa8]',
               )}
             >
               {p.id === room.host && (
-                <span className="absolute top-2 left-2 flex items-center gap-1 rounded-md bg-[#3b2a16] px-1.5 py-0.5 text-[10.500px] font-black text-gold uppercase">
+                <span
+                  className={cx(
+                    'absolute flex items-center gap-1 rounded-md bg-[#3b2a16] px-1.5 py-0.5 text-[10.500px] font-black text-gold uppercase',
+                    room.max > 4 ? '-top-2.5 left-1/2 -translate-x-1/2' : 'top-2 left-2',
+                  )}
+                >
                   <Crown size={11} fill="currentColor" />
                   Host
                 </span>
@@ -547,6 +556,7 @@ function Waiting({ w, room, now, playing }: { w: World; room: Room; now: number;
 
 function Results({ w, room, now, playing }: { w: World; room: Room; now: number; playing: boolean }) {
   const res = room.result!
+  const tower = res.tower
   const [rematching, runRematch] = usePending(400, 700)
   const meId = w.meId
   const myPlace = meId ? res.order.indexOf(meId) + 1 : 0
@@ -566,9 +576,14 @@ function Results({ w, room, now, playing }: { w: World; room: Room; now: number;
       {playing && self ? (
         <>
           <div className="text-[14px] font-extrabold tracking-[0.2em] text-[#8fb6ff] uppercase">Game over</div>
-          <h2 className={cx('animate-pop mt-1 text-[40px] leading-tight font-black sm:text-[48px]', myPlace === 1 ? 'text-gold' : 'text-white')}>
-            {myPlace === 1 ? 'Victory!' : `${ordinal(myPlace)} place`}
+          <h2 className={cx('animate-pop mt-1 text-center text-[40px] leading-tight font-black sm:text-[48px]', (tower ? tower.won : myPlace === 1) ? 'text-gold' : 'text-white')}>
+            {tower ? (tower.won ? 'You reached the top!' : `Fell on floor ${tower.floor + 1}`) : myPlace === 1 ? 'Victory!' : `${ordinal(myPlace)} place`}
           </h2>
+          {tower && (
+            <p className="text-[14.500px] text-soft">
+              {tower.won ? `All ${tower.top} floors cleared together.` : `The team cleared ${tower.floor} of ${tower.top} floors before running out of lives.`}
+            </p>
+          )}
           <div className="mt-3 w-full max-w-[460px] rounded-2xl border border-[#6b4d1f] bg-gradient-to-b from-[#2b2416] to-[#151b2c] p-4">
             <div className="flex items-center gap-3.5">
               <RankBadge tier={standing!.tier} size={46} />
@@ -600,9 +615,15 @@ function Results({ w, room, now, playing }: { w: World; room: Room; now: number;
       ) : (
         <>
           <div className="text-[14px] font-extrabold tracking-[0.2em] text-[#8fb6ff] uppercase">Game over</div>
-          <h2 className="mt-1 flex items-center gap-3 text-[32px] font-black sm:text-[40px]">
-            <Crown size={34} className="text-gold" fill="currentColor" />
-            {winner?.name} wins
+          <h2 className="mt-1 flex items-center gap-3 text-center text-[32px] font-black sm:text-[40px]">
+            {tower ? (
+              tower.won ? 'The team reached the top' : `The team fell on floor ${tower.floor + 1} of ${tower.top}`
+            ) : (
+              <>
+                <Crown size={34} className="text-gold" fill="currentColor" />
+                {winner?.name} wins
+              </>
+            )}
           </h2>
         </>
       )}
@@ -638,12 +659,12 @@ function Results({ w, room, now, playing }: { w: World; room: Room; now: number;
               <span className="min-w-0 flex-1">
                 <span className="block truncate text-[15.500px] font-extrabold">{isMe ? 'You' : p.name}</span>
                 <span className="tabular block text-[12.500px] text-mute">
-                  {res.correct[pid]}/{room.rounds} correct
+                  {res.correct[pid]}/{res.turns?.[pid] ?? room.rounds} correct
                 </span>
               </span>
               <span className="tabular text-right">
-                <span className="block text-[19px] leading-tight font-black">{fmt(res.scores[pid])}</span>
-                <span className="block text-[11.500px] text-mute">points</span>
+                <span className="block text-[19px] leading-tight font-black">{tower ? res.correct[pid] : fmt(res.scores[pid])}</span>
+                <span className="block text-[11.500px] text-mute">{tower ? 'floors won' : 'points'}</span>
               </span>
               <span className="tabular w-[74px] text-right">
                 <span className={cx('block text-[16px] leading-tight font-black', delta >= 0 ? 'text-mint' : 'text-rose')}>
@@ -809,8 +830,14 @@ export function RoomScreen({ id }: { id: number }) {
         {/* right */}
         {!entering && inGame && game.phase !== 'intro' && (
           <aside className="hidden w-[256px] shrink-0 flex-col gap-3 desk:flex">
-            <StandingsPanel w={w} room={room} game={game} />
-            <RoundList w={w} room={room} game={game} playing={playing} />
+            {room.mode === 'tower' ? (
+              <TowerColumn w={w} room={room} game={game} />
+            ) : (
+              <>
+                <StandingsPanel w={w} room={room} game={game} />
+                {MODES[room.mode].turns ? <TurnQueue w={w} room={room} game={game} /> : <RoundList w={w} room={room} game={game} playing={playing} />}
+              </>
+            )}
           </aside>
         )}
       </div>

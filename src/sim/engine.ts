@@ -1,3 +1,4 @@
+import { MODES } from '../game/config'
 import type { Player, Room, World } from '../game/types'
 import { chance, rand, weightedPick } from '../lib/rng'
 import { emit, toast } from './events'
@@ -99,7 +100,9 @@ function inviteHuman(w: World, t: number, live: boolean) {
   const idle = idleBots(w)
   const host = weightedPick(idle, (p) => Math.exp(-Math.abs(p.rating - me.rating) / 200) * (w.friends.includes(p.id) ? 5 : 1))
   if (!host) return
-  const r = createRoom(w, host.id, { ...randomConfig(me), max: chance(0.6) ? 2 : 3 }, t)
+  const cfg = randomConfig(me)
+  // party games need a table, the classic ones work as a duel
+  const r = createRoom(w, host.id, { ...cfg, max: MODES[cfg.mode].turns ? cfg.max : chance(0.6) ? 2 : 3 }, t)
   r.startAt = t + 45_000
   r.nextJoinAt = t + rand(15_000, 30_000)
   w.invites.push({ id: w.nextId++, roomId: r.id, from: host.id, at: t })

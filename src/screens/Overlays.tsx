@@ -1,13 +1,13 @@
 import { BarChart3, BookOpen, CalendarDays, Check, CircleCheck, Crown, Dumbbell, Info, Lock, LoaderCircle, Sparkles, Swords, TriangleAlert } from 'lucide-react'
 import { useEffect, useState } from 'react'
-import { DEFAULT_SECS, DIFFICULTIES, MODES, ROUND_OPTIONS, SECS_OPTIONS, TOPICS } from '../game/config'
+import { DEFAULT_SECS, DIFFICULTIES, HAS_LEVEL, MODES, MODE_IDS, ROUND_LABEL, ROUND_OPTIONS, SEAT_OPTIONS, SECS_OPTIONS, TOPICS } from '../game/config'
 import type { Difficulty, Invite, Mode, RoomTopic } from '../game/types'
 import { usePending } from '../lib/hooks'
 import { go, setUi, showToast, useUi } from '../lib/ui'
 import { acceptInvite, declineInvite, hostRoom } from '../sim/actions'
 import { useWorld } from '../sim/store'
 import { Avatar } from '../ui/Avatar'
-import { cx, DifficultyChip, ModeIcon, Spinner } from '../ui/bits'
+import { cx, LevelChip, ModeIcon, Spinner } from '../ui/bits'
 import { Modal } from '../ui/Modal'
 import { PlayerModal } from './PlayerModal'
 
@@ -53,11 +53,15 @@ function CreateRoomModal({ inviteId }: { inviteId?: string }) {
   const [max, setMax] = useState(target ? 2 : 4)
   const [priv, setPriv] = useState(!!target)
   const close = () => setUi({ create: null })
+  // a one-on-one challenge can only be a head-to-head game
+  const modes = target ? MODE_IDS.filter((m) => SEAT_OPTIONS[m].includes(2)) : MODE_IDS
 
-  // time per round follows the mode and level until the player overrides it
+  // rounds, time and seats follow the game until the player overrides them
   const pickMode = (m: Mode) => {
     setMode(m)
     setSecs(DEFAULT_SECS[m][difficulty])
+    setRounds(ROUND_OPTIONS[m][m === 'vocab' || m === 'listening' ? 0 : 1])
+    setMax(target ? 2 : SEAT_OPTIONS[m].includes(max) ? max : SEAT_OPTIONS[m][SEAT_OPTIONS[m].length - 2])
   }
   const pickDifficulty = (d: Difficulty) => {
     setDifficulty(d)
@@ -92,21 +96,23 @@ function CreateRoomModal({ inviteId }: { inviteId?: string }) {
         <div className="mt-5 space-y-5">
           <div>
             <Label>Game</Label>
-            <div className="grid grid-cols-2 gap-2.5">
-              {(['vocab', 'listening'] as Mode[]).map((m) => (
+            <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
+              {modes.map((m) => (
                 <button
                   key={m}
                   onClick={() => pickMode(m)}
                   className={cx(
-                    'relative rounded-2xl border-2 p-3.5 text-left transition',
+                    'relative flex items-center gap-3 rounded-2xl border-2 p-2.5 pr-8 text-left transition',
                     mode === m ? 'border-azure-2 bg-[#16264d]' : 'border-line bg-[#131d38] hover:border-[#3a4568]',
                   )}
                 >
                   <ModeIcon mode={m} size={40} />
-                  <div className="mt-2.5 text-[15.500px] font-extrabold">{MODES[m].name}</div>
-                  <div className="mt-0.5 text-[12.500px] leading-snug text-mute">{MODES[m].blurb}</div>
+                  <span className="min-w-0">
+                    <span className="block text-[15px] font-extrabold">{MODES[m].name}</span>
+                    <span className="block text-[12px] leading-snug text-mute">{MODES[m].blurb}</span>
+                  </span>
                   {mode === m && (
-                    <span className="absolute top-3 right-3 flex h-5 w-5 items-center justify-center rounded-full bg-azure-2">
+                    <span className="absolute top-2.5 right-2.5 flex h-5 w-5 items-center justify-center rounded-full bg-azure-2">
                       <Check size={13} strokeWidth={4} />
                     </span>
                   )}
@@ -133,19 +139,27 @@ function CreateRoomModal({ inviteId }: { inviteId?: string }) {
             </div>
           </div>
 
-          <div>
-            <Label>Level</Label>
-            <Segmented
-              value={difficulty}
-              onChange={pickDifficulty}
-              options={(Object.keys(DIFFICULTIES) as Difficulty[]).map((d) => [d, DIFFICULTIES[d].name])}
-            />
-          </div>
+          {HAS_LEVEL[mode] ? (
+            <div>
+              <Label>Level</Label>
+              <Segmented
+                value={difficulty}
+                onChange={pickDifficulty}
+                options={(Object.keys(DIFFICULTIES) as Difficulty[]).map((d) => [d, DIFFICULTIES[d].name])}
+              />
+            </div>
+          ) : (
+            <p className="rounded-xl border border-line bg-[#131d38] px-3.5 py-2.5 text-[13px] text-soft">
+              {mode === 'tower'
+                ? 'The tower gets harder as you climb: easy floors at the bottom, a boss sentence at the top. Every fifth floor is a checkpoint that gives the team a life.'
+                : 'No level to set: each turn the challenger chooses between an easy, a medium and a hard sentence.'}
+            </p>
+          )}
 
           <div className="grid grid-cols-3 gap-3">
             <div>
-              <Label>Rounds</Label>
-              <Segmented value={rounds} onChange={setRounds} options={ROUND_OPTIONS.map((n) => [n, String(n)])} />
+              <Label>{ROUND_LABEL[mode]}</Label>
+              <Segmented value={rounds} onChange={setRounds} options={ROUND_OPTIONS[mode].map((n) => [n, String(n)])} />
             </div>
             <div>
               <Label>Seconds</Label>
@@ -153,7 +167,7 @@ function CreateRoomModal({ inviteId }: { inviteId?: string }) {
             </div>
             <div>
               <Label>Players</Label>
-              <Segmented value={max} onChange={setMax} options={[2, 3, 4].map((n) => [n, String(n)])} />
+              <Segmented value={max} onChange={setMax} options={(target ? [2] : SEAT_OPTIONS[mode]).map((n) => [n, String(n)])} />
             </div>
           </div>
 
@@ -288,7 +302,7 @@ function InviteCard({ invite, now }: { invite: Invite; now: number }) {
             <span className="truncate">
               {MODES[room.mode].name} · {TOPICS[room.topic]}
             </span>
-            <DifficultyChip difficulty={room.difficulty} className="!px-1.5 !py-0 !text-[11px]" />
+            <LevelChip room={room} className="!px-1.5 !py-0 !text-[11px]" />
           </div>
         </div>
       </div>

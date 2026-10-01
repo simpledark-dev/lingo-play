@@ -1,13 +1,13 @@
 import { ArrowRight, CalendarDays, Check, ChevronDown, Eye, LayoutGrid, Radio, Search, Signal, Users, Zap, type LucideIcon } from 'lucide-react'
 import { useEffect, useRef, useState, type ReactNode } from 'react'
-import { DIFFICULTIES, MODES, TOPICS } from '../game/config'
+import { DIFFICULTIES, MODES, MODE_IDS, progressLabel, TOPICS } from '../game/config'
 import type { Difficulty, Mode, Room, World } from '../game/types'
 import { useLoading, usePending } from '../lib/hooks'
 import { comingSoon, go, setUi } from '../lib/ui'
 import { joinRoom, quickPlay } from '../sim/actions'
 import { useWorld } from '../sim/store'
 import { Avatar } from '../ui/Avatar'
-import { cx, DifficultyChip, Loading, ModeIcon, Spinner } from '../ui/bits'
+import { cx, LevelChip, Loading, ModeIcon, Spinner } from '../ui/bits'
 import { MyCard, OnlinePanel } from './OnlinePanel'
 
 function ActionCard(props: {
@@ -114,8 +114,7 @@ function AvatarStack({ room }: { room: Room }) {
 function statusOf(room: Room): { dot: string; text: string } {
   if (room.status === 'waiting') return { dot: 'bg-[#fbcf3b]', text: 'Waiting' }
   if (room.status === 'finished') return { dot: 'bg-[#8d99b6]', text: 'Finished' }
-  const g = room.game!
-  return { dot: 'bg-mint', text: g.phase === 'intro' ? 'Starting' : `Round ${g.round + 1}/${room.rounds}` }
+  return { dot: 'bg-mint', text: progressLabel(room) }
 }
 
 function RoomAction({ room, mine, pending }: { room: Room; mine: boolean; pending: boolean }) {
@@ -180,7 +179,7 @@ function RoomRow({ w, room, now }: { w: World; room: Room; now: number }) {
       <AvatarStack room={room} />
       <span className="hidden truncate text-[14px] text-soft wide:block">{TOPICS[room.topic]}</span>
       <span>
-        <DifficultyChip difficulty={room.difficulty} />
+        <LevelChip room={room} />
       </span>
       <span className="flex min-w-0 items-center gap-2 text-[14px] text-soft">
         <span className={cx('h-2.5 w-2.5 shrink-0 rounded-full', st.dot)} />
@@ -224,7 +223,7 @@ function RoomCard({ w, room, now }: { w: World; room: Room; now: number }) {
         <AvatarStack room={room} />
         <span className="ml-auto flex min-w-0 items-center gap-2 text-[13px] text-soft">
           <span className="truncate">{TOPICS[room.topic]}</span>
-          <DifficultyChip difficulty={room.difficulty} className="!px-2 !py-0.5 !text-[12px]" />
+          <LevelChip room={room} className="!px-2 !py-0.5 !text-[12px]" />
           <span className="flex shrink-0 items-center gap-1.5">
             <span className={cx('h-2 w-2 rounded-full', st.dot)} />
             {st.text}
@@ -319,8 +318,7 @@ export function Lobby() {
             onChange={setMode}
             options={[
               ['all', 'All Modes'],
-              ['vocab', MODES.vocab.name],
-              ['listening', MODES.listening.name],
+              ...MODE_IDS.map((m): [Mode, string] => [m, MODES[m].name]),
             ]}
           />
           <Dropdown

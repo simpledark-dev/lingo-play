@@ -3,7 +3,7 @@ import { useId, useState } from 'react'
 import { COUNTRY_NAMES } from '../data/names'
 import { MODES } from '../game/config'
 import { tierOf } from '../game/tiers'
-import type { Mode, Player, World } from '../game/types'
+import type { Player, Skill, World } from '../game/types'
 import { useLoading, usePending } from '../lib/hooks'
 import { go, setUi } from '../lib/ui'
 import { addFriend, logout, removeFriend, updateProfile } from '../sim/actions'
@@ -59,7 +59,7 @@ function RatingChart({ history }: { history: number[] }) {
   )
 }
 
-function SkillCard({ w, p, mode }: { w: World; p: Player; mode: Mode }) {
+function SkillCard({ w, p, mode }: { w: World; p: Player; mode: Skill }) {
   const all = Object.values(w.players)
   const rank = all.filter((o) => o.skills[mode] > p.skills[mode]).length + 1
   const color = mode === 'listening' ? '#9b6bff' : '#3ed598'
@@ -99,7 +99,7 @@ function RecentGames({ w, p, now }: { w: World; p: Player; now: number }) {
                 win ? 'bg-[#12553a] text-[#5ee0a6]' : 'bg-[#5a1f2c] text-[#ff8a9c]',
               )}
             >
-              {g.of > 2 ? ordinal(g.place) : win ? 'Win' : 'Loss'}
+              {g.mode === 'tower' ? (win ? 'Top' : 'Fell') : g.of > 2 ? ordinal(g.place) : win ? 'Win' : 'Loss'}
             </span>
             <span className={cx('tabular w-9 text-right text-[13px] font-extrabold', g.delta >= 0 ? 'text-mint' : 'text-rose')}>
               {g.delta >= 0 ? '+' : ''}
