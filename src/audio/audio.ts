@@ -10,7 +10,7 @@ function unlock() {
   unlocked = true
   window.removeEventListener('pointerdown', unlock)
   window.removeEventListener('keydown', unlock)
-  ctx?.resume()
+  preloadSfx()
   syncMusic()
   unlockWaiters.splice(0).forEach((fn) => fn())
 }
@@ -61,59 +61,46 @@ onSettings(syncMusic)
 
 // ---------------------------------------------------------------- sound effects
 
-let ctx: AudioContext | null = null
-
-function tone(freq: number, start: number, dur: number, type: OscillatorType = 'sine', gain = 0.12) {
-  if (!ctx) return
-  const osc = ctx.createOscillator()
-  const g = ctx.createGain()
-  osc.type = type
-  osc.frequency.value = freq
-  const t0 = ctx.currentTime + start
-  g.gain.setValueAtTime(0, t0)
-  g.gain.linearRampToValueAtTime(gain, t0 + 0.012)
-  g.gain.exponentialRampToValueAtTime(0.0001, t0 + dur)
-  osc.connect(g).connect(ctx.destination)
-  osc.start(t0)
-  osc.stop(t0 + dur + 0.02)
+const SFX: Record<SfxName, { src: string; volume: number; rate?: number }> = {
+  correct: { src: '/assets/sfx/correct.wav', volume: 0.32, rate: 1.08 },
+  wrong: { src: '/assets/sfx/wrong.wav', volume: 0.28 },
+  tick: { src: '/assets/sfx/tick.wav', volume: 0.14 },
+  start: { src: '/assets/sfx/start.wav', volume: 0.25 },
+  win: { src: '/assets/sfx/win.wav', volume: 0.32 },
+  lose: { src: '/assets/sfx/lose.wav', volume: 0.28 },
+  join: { src: '/assets/sfx/join.wav', volume: 0.18, rate: 1.06 },
+  pop: { src: '/assets/sfx/pop.wav', volume: 0.16, rate: 1.12 },
+  invite: { src: '/assets/sfx/invite.wav', volume: 0.23 },
 }
 
-const SFX: Record<SfxName, () => void> = {
-  correct: () => {
-    tone(660, 0, 0.14, 'triangle')
-    tone(990, 0.09, 0.22, 'triangle')
-  },
-  wrong: () => {
-    tone(220, 0, 0.18, 'sawtooth', 0.06)
-    tone(170, 0.1, 0.24, 'sawtooth', 0.06)
-  },
-  tick: () => tone(880, 0, 0.05, 'square', 0.04),
-  start: () => {
-    tone(523, 0, 0.12, 'triangle')
-    tone(659, 0.1, 0.12, 'triangle')
-    tone(784, 0.2, 0.25, 'triangle')
-  },
-  win: () => {
-    ;[523, 659, 784, 1047].forEach((f, i) => tone(f, i * 0.11, 0.3, 'triangle', 0.13))
-  },
-  lose: () => {
-    tone(392, 0, 0.2, 'triangle', 0.1)
-    tone(330, 0.16, 0.34, 'triangle', 0.1)
-  },
-  join: () => tone(740, 0, 0.12, 'sine', 0.08),
-  pop: () => tone(520, 0, 0.07, 'sine', 0.08),
-  invite: () => {
-    tone(880, 0, 0.12, 'sine', 0.1)
-    tone(1175, 0.12, 0.2, 'sine', 0.1)
-  },
+const sfxCache = new Map<SfxName, HTMLAudioElement>()
+
+function sound(name: SfxName) {
+  let audio = sfxCache.get(name)
+  if (audio) return audio
+  const cue = SFX[name]
+  audio = new Audio()
+  audio.preload = 'auto'
+  audio.src = cue.src
+  audio.load()
+  sfxCache.set(name, audio)
+  return audio
+}
+
+function preloadSfx() {
+  ;(Object.keys(SFX) as SfxName[]).forEach(sound)
 }
 
 export function sfx(name: SfxName) {
   if (!getSettings().sfx || !unlocked) return
   try {
-    ctx ??= new AudioContext()
-    if (ctx.state === 'suspended') ctx.resume()
-    SFX[name]()
+    const cue = SFX[name]
+    const cached = sound(name)
+    const audio = cached.paused ? cached : (cached.cloneNode(true) as HTMLAudioElement)
+    audio.volume = cue.volume
+    audio.playbackRate = cue.rate ?? 1
+    audio.currentTime = 0
+    audio.play().catch(() => {})
   } catch {
     // no audio available
   }
