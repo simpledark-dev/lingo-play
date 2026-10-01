@@ -15,7 +15,7 @@ npm run build    # type-check + production build
 
 - Login screen with **Play as guest** (random name, 1200 rating).
 - Lobby: live room list with filters and search, Quick Play, Create Room, online players (All / Friends / Top Players).
-- Two games: **Vocabulary Battle** (multiple choice) and **Listening Rush** (dictation with the browser's text-to-speech).
+- Two games: **Vocabulary Battle** (multiple choice) and **Listening Rush** (dictation with pre-rendered neural speech and a browser TTS fallback).
   Topic, level, rounds, seconds per round and seats are chosen when creating a room.
 - Quick reactions in every room (no live chat).
 - Ratings (multiplayer Elo), titles from Rookie to Grandmaster, "N more to reach the next title", rankings page.
@@ -45,9 +45,23 @@ To start from a clean world, clear the site's local storage.
 
 - `public/assets/logo.png`, `lobby-banner.png`, `side-banner.png`, `game-bg.jpg` come from the `references` folder.
 - Icons are `lucide-react` SVGs; rank shields, flags and avatars are drawn in code (`src/ui`). No emoji are used as icons.
+- Sound effects in `public/assets/sfx` are adapted from Robin Lamb's CC0 UI Sound Effects pack, which uses public-domain VCSL and VSCO 2 CE instrument samples.
+- Listening clips in `public/assets/speech` use Microsoft Edge's no-key `en-US-EmmaNeural` voice at a slightly reduced base speed.
 - Lobby music candidates by Kevin MacLeod (incompetech.com), licensed under Creative Commons Attribution 4.0:
   - `public/assets/music/lobby.mp3`: "Wallpaper" (current track)
   - `public/assets/music/lobby-time.mp3`: "Lobby Time"
   - `public/assets/music/airport-lounge.mp3`: "Airport Lounge"
   - `public/assets/music/local-forecast-elevator.mp3`: "Local Forecast - Elevator"
   To test a candidate, change the filename passed to `new Audio(...)` in `src/audio/audio.ts`.
+
+## Regenerate listening speech
+
+The generator uses the free, no-key `edge-tts` package. It only needs an internet connection while rendering; gameplay uses the checked-in MP3 files.
+
+```bash
+python3 -m pip install edge-tts
+npm run speech
+
+# Re-render existing clips or try another voice:
+FORCE=1 VOICE=en-US-EmmaNeural RATE=-3% npm run speech
+```

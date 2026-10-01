@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LingoPlay mockup: B · Paper</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..900;1,9..144,400..900&family=IBM+Plex+Mono:wght@400;500;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400..700;1,8..60,400..700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}body{margin:0}button{font:inherit;cursor:pointer}a{color:inherit}svg{display:block}
+
+.screen{display:none}.screen:target{display:block}body:not(:has(.screen:target)) #lobby{display:block}
+.mock-switch{position:fixed;right:14px;bottom:14px;z-index:99;display:flex;gap:2px;padding:4px;border-radius:999px;background:#111;box-shadow:0 6px 20px rgba(0,0,0,.35);font:600 12px/1 system-ui,sans-serif}
+.mock-switch a{color:#ddd;text-decoration:none;padding:8px 12px;border-radius:999px}.mock-switch a:hover{background:#333;color:#fff}.mock-switch span{color:#888;padding:8px 6px 8px 12px}
+
+
+:root{--ink:#1d1a16;--paper:#f5f0e4;--red:#b3261e;--rule:#1d1a16;--soft:#6b6457}
+body{background:var(--paper);color:var(--ink);font:16px/1.5 "Source Serif 4",Georgia,serif}
+a{text-decoration:none}
+.sheet{max-width:1160px;margin:0 auto;padding:18px 28px 80px}
+.dateline{display:flex;justify-content:space-between;font:500 12px/1 "IBM Plex Mono",monospace;text-transform:uppercase;letter-spacing:.08em;padding-bottom:10px;border-bottom:1px solid var(--rule)}
+.mast{text-align:center;padding:20px 0 14px;border-bottom:3px double var(--rule)}
+.mast h1{margin:0;font:900 76px/.95 "Fraunces",serif;letter-spacing:-.03em}.mast h1 i{color:var(--red);font-weight:400}
+.mast p{margin:8px 0 0;font-style:italic;color:var(--soft)}
+.nav{display:flex;justify-content:center;gap:34px;padding:11px 0;border-bottom:1px solid var(--rule);font:600 13px/1 "IBM Plex Mono",monospace;text-transform:uppercase;letter-spacing:.1em}
+.nav a.on{color:var(--red);border-bottom:2px solid var(--red);padding-bottom:3px}.nav sup{font-size:9px;color:var(--soft);letter-spacing:0}
+.cols{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:40px;margin-top:26px}
+.kicker{font:600 12px/1 "IBM Plex Mono",monospace;text-transform:uppercase;letter-spacing:.12em;color:var(--red)}
+h2{font:700 34px/1.1 "Fraunces",serif;margin:6px 0 4px;letter-spacing:-.01em}
+.lede{color:var(--soft);margin:0 0 14px;max-width:560px}
+.cta{display:flex;gap:12px;align-items:center;margin-bottom:22px}
+.press{background:var(--ink);color:var(--paper);border:0;padding:11px 20px;font:600 14px/1 "IBM Plex Mono",monospace;text-transform:uppercase;letter-spacing:.08em}
+.press:hover{background:var(--red)}.press.alt{background:none;color:var(--ink);box-shadow:inset 0 0 0 1.500px var(--ink)}.press.alt:hover{background:var(--ink);color:var(--paper)}
+.filters{margin-left:auto;font:500 12px/1 "IBM Plex Mono",monospace;color:var(--soft)}.filters b{color:var(--ink);border-bottom:1px solid var(--ink)}
+.entry{display:grid;grid-template-columns:64px minmax(0,1fr) auto;gap:6px 18px;padding:15px 0;border-top:1px solid var(--rule);align-items:baseline}
+.entry:last-child{border-bottom:1px solid var(--rule)}
+.no{font:500 13px/1 "IBM Plex Mono",monospace;color:var(--soft)}
+.entry h3{margin:0;font:700 21px/1.2 "Fraunces",serif}.entry h3 small{font:italic 400 15px "Source Serif 4",serif;color:var(--soft);margin-left:8px}
+.who{grid-column:2;font-size:15px}.who b{font-weight:600}.who span{font:500 13px "IBM Plex Mono",monospace;color:var(--soft)}
+.go{grid-row:1/3;grid-column:3;align-self:center;text-align:right;font:600 13px/1.4 "IBM Plex Mono",monospace;text-transform:uppercase;letter-spacing:.08em}
+.go a{border-bottom:2px solid var(--red);color:var(--red);padding-bottom:2px}.go a.w{border-color:var(--ink);color:var(--ink)}
+.go em{display:block;font:italic 400 14px "Source Serif 4",serif;text-transform:none;letter-spacing:0;color:var(--soft);margin-top:6px}
+aside h4{margin:0 0 10px;padding-bottom:7px;border-bottom:1px solid var(--rule);font:600 12px/1 "IBM Plex Mono",monospace;text-transform:uppercase;letter-spacing:.12em;display:flex;justify-content:space-between}
+.stand{border:1px solid var(--rule);padding:16px;margin-bottom:28px;background:#fbf8f0}
+.stand .big{font:900 58px/.9 "Fraunces",serif}.stand .t{font:italic 600 18px "Fraunces",serif;color:var(--red)}
+.ruler{height:14px;margin:14px 0 6px;background:repeating-linear-gradient(90deg,var(--ink) 0 1px,transparent 1px 10%);border-bottom:1px solid var(--ink);position:relative}
+.ruler i{position:absolute;left:0;bottom:-1px;height:5px;background:var(--red)}
+.stand p{margin:0;font-size:14px;color:var(--soft)}
+.roll div{display:flex;align-items:baseline;gap:6px;font-size:15px;padding:3px 0}
+.roll div::after{content:"";order:2;flex:1;border-bottom:1px dotted #9a927f;transform:translateY(-3px)}
+.roll b{order:3;font:500 13px "IBM Plex Mono",monospace}.roll span{order:1}.roll small{order:0;width:22px;font:500 11px "IBM Plex Mono",monospace;color:var(--soft)}
+.roll .me span{font-weight:700;color:var(--red)}.roll .p span::after{content:" *";color:var(--red)}
+.note{font:italic 13px "Source Serif 4",serif;color:var(--soft);margin-top:10px}
+.pro{margin-top:28px;border-top:3px double var(--rule);padding-top:12px;font-size:14px}.pro b{font:700 17px "Fraunces",serif;display:block}
+/* game */
+.gcols{display:grid;grid-template-columns:230px minmax(0,1fr) 210px;gap:44px;margin-top:30px}
+.def{border-top:3px double var(--rule);padding-top:22px}
+.head{font:900 92px/.95 "Fraunces",serif;letter-spacing:-.03em;margin:8px 0 6px}
+.ipa{font:400 19px "IBM Plex Mono",monospace;color:var(--soft)}.ipa i{font:italic 18px "Source Serif 4",serif;color:var(--red);margin-left:10px}
+.ask{margin:26px 0 6px;font-style:italic;color:var(--soft)}
+.senses{list-style:none;margin:0;padding:0;border-bottom:1px solid var(--rule)}
+.senses li{display:flex;gap:16px;align-items:baseline;padding:13px 6px;border-top:1px solid var(--rule);font-size:24px;cursor:pointer}
+.senses li:hover{background:#ebe4d2}.senses b{font:600 14px "IBM Plex Mono",monospace;color:var(--red);width:18px}
+.senses kbd{margin-left:auto;font:500 11px "IBM Plex Mono",monospace;color:var(--soft);border:1px solid #b5ad9a;padding:2px 6px}
+.ticks{display:flex;gap:4px;margin-top:22px;align-items:flex-end}.ticks i{width:3px;height:16px;background:var(--ink)}.ticks i.gone{background:#cfc7b3;height:10px}
+.ticks span{margin-left:10px;font:500 13px "IBM Plex Mono",monospace}
+.tally div{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--rule);font-size:16px}.tally b{font:600 15px "IBM Plex Mono",monospace}
+.tally .you{color:var(--red);font-weight:700}.tally small{display:block;font:italic 13px "Source Serif 4",serif;color:var(--soft)}
+.said a{display:block;padding:6px 0;border-bottom:1px dotted #9a927f;font-style:italic}.said a:hover{color:var(--red)}
+.back{font:600 12px "IBM Plex Mono",monospace;text-transform:uppercase;letter-spacing:.1em;border-bottom:1px solid var(--ink)}
+
+</style>
+</head>
+<body>
+<section class="screen" id="lobby">
+<div class="sheet"><div class="dateline"><span>Thursday, 1 October 2026</span><span>172 players online &middot; 41 tables open</span><span>SunnyOtter21 &middot; 1200 &middot; <a href="#">sign out</a></span></div>
+<header class="mast"><h1>Lingo<i>Play</i></h1><p>Play together, learn faster.</p></header>
+<nav class="nav"><a class="on" href="#lobby">Tables</a><a href="#">Daily challenge <sup>soon</sup></a><a href="#">Rankings</a><a href="#">Learn <sup>soon</sup></a><a href="#">Community <sup>soon</sup></a><a href="#">Profile</a></nav>
+<div class="cols">
+<main>
+  <div class="kicker">Now playing</div><h2>Find a table, or open your own</h2>
+  <p class="lede">Every game is live against other learners. Win and your rating goes up; lose and it comes down.</p>
+  <div class="cta"><button class="press">Quick play</button><button class="press alt">Open a table</button>
+  <span class="filters">Showing <b>all games</b>, <b>all levels</b></span></div>
+  <div class="entry"><span class="no">No. 636</span><h3>Vocabulary Battle<small>travel, medium &middot; 10 questions, 8 seconds each</small></h3><div class="who"><b>mynga95</b> <span>1373</span></div><div class="go"><a href="#game">Take a seat &rarr;</a><em>three of four seats free</em></div></div><div class="entry"><span class="no">No. 635</span><h3>Listening Rush<small>food & drink, easy &middot; 15 sentences, 20 seconds each</small></h3><div class="who"><b>anhvu90</b> <span>1289</span>, <b>thocon_xinh</b> <span>1204</span></div><div class="go"><a href="#game">Take a seat &rarr;</a><em>one of three seats free</em></div></div><div class="entry"><span class="no">No. 634</span><h3>Listening Rush<small>random, hard &middot; 20 sentences, 30 seconds each</small></h3><div class="who"><b>pierre_l</b> <span>1812</span>, <b>khoadz</b> <span>1705</span></div><div class="go"><a href="#game">Take a seat &rarr;</a><em>two of four seats free</em></div></div><div class="entry"><span class="no">No. 606</span><h3>Listening Rush<small>daily life, medium &middot; 10 sentences, 20 seconds each</small></h3><div class="who"><b>ms_lan</b> <span>1891</span>, <b>gaucon98</b> <span>1658</span></div><div class="go"><a class="w" href="#game">Watch</a><em>round 4 of 10, 3 looking on</em></div></div><div class="entry"><span class="no">No. 633</span><h3>Vocabulary Battle<small>family, medium &middot; 10 questions, 6 seconds each</small></h3><div class="who"><b>linhngoc</b> <span>1653</span>, <b>acphat1</b> <span>1646</span></div><div class="go"><a href="#game">Take a seat &rarr;</a><em>two of four seats free</em></div></div><div class="entry"><span class="no">No. 612</span><h3>Vocabulary Battle<small>food & drink, easy &middot; 10 questions, 10 seconds each</small></h3><div class="who"><b>camille_b</b> <span>1640</span>, <b>nhivu</b> <span>1577</span>, <b>tunam2k5</b> <span>1571</span></div><div class="go"><a class="w" href="#game">Watch</a><em>round 7 of 10, 1 looking on</em></div></div><div class="entry"><span class="no">No. 632</span><h3>Vocabulary Battle<small>transportation, hard &middot; 20 questions, 8 seconds each</small></h3><div class="who"><b>teacher_mike</b> <span>1624</span>, <b>huyuyen</b> <span>1615</span></div><div class="go"><a class="w" href="#game">Watch</a><em>round 2 of 20</em></div></div><div class="entry"><span class="no">No. 631</span><h3>Listening Rush<small>daily life, hard &middot; 20 sentences, 30 seconds each</small></h3><div class="who"><b>giangchi92</b> <span>1616</span>, <b>ateocuimia</b> <span>1594</span>, <b>timnguyen</b> <span>1570</span></div><div class="go"><a class="w" href="#game">Watch</a><em>round 12 of 20, 2 looking on</em></div></div><div class="entry"><span class="no">No. 629</span><h3>Vocabulary Battle<small>nature, easy &middot; 15 questions, 10 seconds each</small></h3><div class="who"><b>be_tuan</b> <span>1089</span>, <b>hanoi36</b> <span>1122</span></div><div class="go"><a class="w" href="#game">Watch</a><em>round 9 of 15</em></div></div><div class="entry"><span class="no">No. 628</span><h3>Listening Rush<small>travel, medium &middot; 15 sentences, 20 seconds each</small></h3><div class="who"><b>sakura88</b> <span>1538</span>, <b>danang_boy</b> <span>1553</span>, <b>cuhuoi</b> <span>1283</span>, <b>meomeo2k4</b> <span>1310</span></div><div class="go"><a class="w" href="#game">Watch</a><em>round 1 of 15, 5 looking on</em></div></div>
+</main>
+<aside>
+  <div class="stand"><div class="kicker">Your standing</div><div class="big">1200</div><div class="t">Silver II</div>
+    <div class="ruler"><i style="width:0%"></i></div><p><b style="color:var(--ink)">100 points</b> to Gold I. Ranked 131 of 231.</p></div>
+  <h4>Players online <span>172</span></h4>
+  <div class="roll"><div class="p"><small>1</small><span>mynga95</span><b>2181</b></div><div class=""><small>2</small><span>anhvu90</span><b>2065</b></div><div class="p"><small>3</small><span>ms_lan</span><b>1891</b></div><div class=""><small>4</small><span>pierre_l</span><b>1812</b></div><div class=""><small>5</small><span>khoadz</span><b>1705</b></div><div class="p"><small>6</small><span>gaucon98</span><b>1658</b></div><div class=""><small>7</small><span>linhngoc</span><b>1653</b></div><div class=""><small>8</small><span>acphat1</span><b>1646</b></div><div class=""><small>9</small><span>thinhquang</span><b>1644</b></div><div class="p"><small>10</small><span>camille_b</span><b>1640</b></div><div class="p"><small>11</small><span>teacher_mike</span><b>1624</b></div><div class=""><small>12</small><span>phuongnghia</span><b>1621</b></div><div class="p"><small>13</small><span>giangchi92</span><b>1616</b></div><div class="p"><small>14</small><span>huyuyen</span><b>1615</b></div><div class="me"><small>131</small><span>SunnyOtter21 (you)</span><b>1200</b></div></div>
+  <p class="note">* at a table right now</p>
+  <div class="pro"><b>LingoPlay Pro</b>Lessons and unlimited practice between games. <a href="#" style="color:var(--red);border-bottom:1px solid">Coming soon</a></div>
+</aside>
+</div></div>
+</section>
+<section class="screen" id="game">
+<div class="sheet"><div class="dateline"><span>Thursday, 1 October 2026</span><span>172 players online &middot; 41 tables open</span><span>SunnyOtter21 &middot; 1200 &middot; <a href="#">sign out</a></span></div>
+<header class="mast"><h1>Lingo<i>Play</i></h1><p>Play together, learn faster.</p></header>
+<nav class="nav"><a class="on" href="#lobby">Tables</a><a href="#">Daily challenge <sup>soon</sup></a><a href="#">Rankings</a><a href="#">Learn <sup>soon</sup></a><a href="#">Community <sup>soon</sup></a><a href="#">Profile</a></nav>
+<div class="gcols">
+  <aside><a class="back" href="#lobby">&larr; Leave table</a>
+    <h4 style="margin-top:26px">Table No. 612 <span>7 / 10</span></h4>
+    <div class="tally"><div class=""><span>camille_b<small>answer in</small></span><b>812</b></div><div class="you"><span>You<small>still thinking</small></span><b>724</b></div><div class=""><span>nhivu<small>still thinking</small></span><b>655</b></div><div class=""><span>tunam2k5<small>answer in</small></span><b>590</b></div></div><p class="note">One reader is looking on.</p></aside>
+  <main class="def"><div class="kicker">Question 7 of 10 &middot; Travel</div>
+    <div class="head">passport</div><div class="ipa">/ˈpæs.pɔːrt/<i>noun</i></div>
+    <p class="ask">Which of these is its meaning in Vietnamese?</p>
+    <ol class="senses"><li><b>a</b>hành lý<kbd>1</kbd></li><li><b>b</b>hộ chiếu<kbd>2</kbd></li><li><b>c</b>bản đồ<kbd>3</kbd></li><li><b>d</b>khách sạn<kbd>4</kbd></li></ol>
+    <div class="ticks"><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class="gone"></i><i class="gone"></i><i class="gone"></i><i class="gone"></i><span>4 seconds</span></div></main>
+  <aside><h4>Say a word</h4><div class="said"><a href="#">Good luck!</a><a href="#">Nice!</a><a href="#">Awesome!</a><a href="#">Wow!</a><a href="#">So close!</a><a href="#">Too fast!</a><a href="#">GG!</a><a href="#">One more round?</a></div></aside>
+</div></div>
+</section>
+<!-- mockup navigation, not part of the design -->
+<nav class="mock-switch"><span>B · Paper</span><a href="#lobby">Lobby</a><a href="#game">Game</a><a href="index.html">All mockups</a></nav>
+</body>
+</html>

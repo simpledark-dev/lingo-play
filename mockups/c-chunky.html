@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LingoPlay mockup: C · Chunky</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400..700&family=Nunito+Sans:opsz,wght@6..12,400..800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}body{margin:0}button{font:inherit;cursor:pointer}a{color:inherit}svg{display:block}
+
+.screen{display:none}.screen:target{display:block}body:not(:has(.screen:target)) #lobby{display:block}
+.mock-switch{position:fixed;right:14px;bottom:14px;z-index:99;display:flex;gap:2px;padding:4px;border-radius:999px;background:#111;box-shadow:0 6px 20px rgba(0,0,0,.35);font:600 12px/1 system-ui,sans-serif}
+.mock-switch a{color:#ddd;text-decoration:none;padding:8px 12px;border-radius:999px}.mock-switch a:hover{background:#333;color:#fff}.mock-switch span{color:#888;padding:8px 6px 8px 12px}
+
+
+:root{--navy:#22304f;--soft:#6f7a93;--line:#e7e2d6;--bg:#fbf7ee;--coral:#ff6b4a;--coral-d:#d94d2f;--sun:#ffc93c;--sun-d:#dba516;--mint:#19b394;--mint-d:#0f8f75;--sky:#3f9cf5;--sky-d:#2a7bd0;--grape:#8b6cf0}
+body{background:var(--bg);color:var(--navy);font:500 16px/1.4 "Nunito Sans","Helvetica Neue",sans-serif}
+h1,h2,h3,.dsp{font-family:"Fredoka",sans-serif}
+a{text-decoration:none}
+.app{display:grid;grid-template-columns:216px minmax(0,1fr) 304px;min-height:100vh}
+.side{padding:22px 14px;border-right:2px solid var(--line);display:flex;flex-direction:column;gap:4px;background:#fff}
+.logo{font:700 27px/1 "Fredoka";padding:0 10px 18px;letter-spacing:-.5px}.logo b{color:var(--coral)}
+.side a{display:flex;align-items:center;gap:12px;padding:11px 12px;border-radius:14px;font:600 16px "Fredoka";color:var(--soft);border:2px solid transparent}
+.side a svg{width:23px;height:23px;flex:none}.side a.on{background:#fff1ec;border-color:#ffd3c7;color:var(--coral-d)}.side a:hover{background:#f6f2e8}
+.side a small{margin-left:auto;font:700 10px "Nunito Sans";background:var(--line);color:var(--soft);padding:2px 6px;border-radius:6px;text-transform:uppercase}
+.pro{margin-top:auto;border:2px solid var(--sun-d);background:#fff7dc;border-radius:16px;padding:14px;font-size:14px}.pro b{font:700 17px "Fredoka";display:block}
+.main{padding:26px 30px 70px}
+.hello{font-size:31px;font-weight:600;margin:0}.sub{color:var(--soft);margin:2px 0 18px}
+.big{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:26px}
+.btn{border:0;border-radius:16px;color:#fff;font:600 19px "Fredoka";padding:16px 18px;display:flex;align-items:center;gap:12px;text-align:left;border-bottom:5px solid}
+.btn:active{transform:translateY(3px);border-bottom-width:2px}.btn svg{width:30px;height:30px;flex:none}.btn span{display:block;font:500 14px "Nunito Sans";opacity:.9}
+.b-coral{background:var(--coral);border-color:var(--coral-d)}.b-sky{background:var(--sky);border-color:var(--sky-d)}.b-mint{background:var(--mint);border-color:var(--mint-d)}
+.b-white{background:#fff;color:var(--navy);border:2px solid var(--line);border-bottom:5px solid var(--line)}
+.row{display:flex;align-items:center;gap:8px;margin-bottom:12px}.row h2{margin:0;font-size:22px;font-weight:600}
+.chip{border:2px solid var(--line);background:#fff;border-radius:999px;padding:5px 13px;font:600 14px "Fredoka";color:var(--soft)}.chip.on{background:var(--navy);border-color:var(--navy);color:#fff}
+.row .sp{margin-left:auto}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.card{background:#fff;border:2px solid var(--line);border-bottom-width:5px;border-radius:18px;padding:14px 16px;display:grid;grid-template-columns:auto 1fr auto;gap:4px 12px;align-items:center}
+.card:hover{border-color:#d3ccba}
+.mi{width:46px;height:46px;border-radius:14px;display:grid;place-items:center;color:#fff;grid-row:1/3}.mi svg{width:26px;height:26px}
+.mi.v{background:var(--mint)}.mi.l{background:var(--grape)}
+.card h3{margin:0;font-size:18px;font-weight:600}.card p{margin:0;color:var(--soft);font-size:14px}
+.card .a{grid-row:1/3;grid-column:3}
+.sm{font:600 15px "Fredoka";border-radius:12px;padding:8px 18px;border:0;border-bottom:4px solid;color:#fff}
+.sm.j{background:var(--coral);border-color:var(--coral-d)}.sm.w{background:#eef4ff;color:var(--sky-d);border-color:#cfe0fb}
+.meta{grid-column:1/-1;display:flex;align-items:center;gap:8px;border-top:2px dashed var(--line);margin-top:8px;padding-top:10px;font-size:14px;color:var(--soft)}
+.seats{display:flex}.seat{width:28px;height:28px;border-radius:50%;border:2px solid #fff;margin-left:-7px;display:grid;place-items:center;font:700 12px "Fredoka";color:#fff}.seat:first-child{margin-left:0}
+.seat.e{background:#fff;border:2px dashed #cfc8b6;color:#b7b09d}
+.lv{font:700 12px "Nunito Sans";text-transform:uppercase;letter-spacing:.04em;padding:3px 8px;border-radius:8px}
+.lv.Easy{background:#dcf7ef;color:var(--mint-d)}.lv.Medium{background:#fff3cf;color:#9a7407}.lv.Hard{background:#ffe3dc;color:var(--coral-d)}
+.stt{margin-left:auto;font-weight:700;color:var(--navy)}
+.right{padding:24px 20px;border-left:2px solid var(--line);background:#fff}
+.mecard{border:2px solid var(--line);border-bottom-width:5px;border-radius:18px;padding:16px;margin-bottom:22px}
+.mecard .top{display:flex;gap:12px;align-items:center}.av{width:52px;height:52px;border-radius:50%;background:var(--sky);color:#fff;display:grid;place-items:center;font:700 22px "Fredoka"}
+.mecard b{font:600 18px "Fredoka"}.mecard .r{font:700 26px "Fredoka";color:var(--sun-d)}
+.prog{height:14px;border-radius:99px;background:var(--line);margin:14px 0 6px;overflow:hidden}.prog i{display:block;height:100%;width:4%;background:var(--sun);border-radius:99px}
+.mecard small{color:var(--soft);font-size:14px}.mecard small b{font:700 14px "Nunito Sans";color:var(--navy)}
+.right h4{font:600 18px "Fredoka";margin:0 0 8px;display:flex;justify-content:space-between}.right h4 span{color:var(--mint-d);font-size:15px}
+.pl{display:flex;align-items:center;gap:10px;padding:6px 4px;border-radius:10px;font-weight:600}.pl:hover{background:var(--bg)}
+.pl i{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;font:700 13px "Fredoka";color:#fff;font-style:normal}
+.pl span{margin-left:auto;font-weight:800;color:var(--soft)}.pl em{font-style:normal;font-size:12px;color:var(--soft);font-weight:500;display:block;line-height:1}
+/* game */
+.g{max-width:860px;margin:0 auto;padding:22px 20px 80px}
+.gtop{display:flex;align-items:center;gap:14px}.x{width:40px;height:40px;border-radius:12px;border:2px solid var(--line);border-bottom-width:4px;background:#fff;font:700 18px "Fredoka";color:var(--soft)}
+.track{flex:1;height:18px;border-radius:99px;background:var(--line);overflow:hidden}.track i{display:block;height:100%;width:65%;background:var(--mint);border-radius:99px;box-shadow:inset 0 4px 0 rgba(255,255,255,.3)}
+.time{font:700 22px "Fredoka";color:var(--coral-d);display:flex;gap:6px;align-items:center}.time svg{width:24px;height:24px}
+.ps{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:22px 0}
+.p{background:#fff;border:2px solid var(--line);border-bottom-width:4px;border-radius:16px;padding:10px 12px;display:flex;align-items:center;gap:10px}
+.p.you{border-color:var(--sun-d);background:#fffaea}.p i{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;color:#fff;font:700 15px "Fredoka";font-style:normal;flex:none}
+.p b{font:600 15px "Fredoka";display:block}.p small{color:var(--soft);font-size:13px}.p strong{margin-left:auto;font:700 21px "Fredoka"}
+.ask{text-align:center;color:var(--soft);font:600 17px "Fredoka";margin-top:34px}.word{text-align:center;font:700 72px/1.1 "Fredoka";margin:4px 0 30px}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.o{background:#fff;border:2px solid var(--line);border-bottom-width:6px;border-radius:18px;padding:18px 20px;font:800 22px "Nunito Sans";color:var(--navy);text-align:left;display:flex;gap:14px;align-items:center}
+.o:hover{border-color:var(--sky);background:#f1f7ff}.o kbd{width:34px;height:34px;border:2px solid var(--line);border-radius:10px;display:grid;place-items:center;font:700 15px "Fredoka";color:var(--soft)}
+.rx{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:36px}
+
+</style>
+</head>
+<body>
+<section class="screen" id="lobby">
+<div class="app">
+<aside class="side"><div class="logo">lingo<b>play</b></div><a class="on" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="4"/><path d="M7 12h4M9 10v4M15.500 11h.010M18 13h.010"/></svg>Play</a><a class="" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>Daily<small>soon</small></a><a class="" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 4h10v5a5 5 0 0 1-10 0z"/><path d="M7 6H4v1a3 3 0 0 0 3 3M17 6h3v1a3 3 0 0 1-3 3M12 14v4M8 21h8M9 18h6"/></svg>Rankings</a><a class="" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6c-2-1.500-5-2-8-2v15c3 0 6 .500 8 2 2-1.500 5-2 8-2V4c-3 0-6 .500-8 2zM12 6v15"/></svg>Learn<small>soon</small></a><a class="" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16v11H9l-5 4z"/></svg>Community<small>soon</small></a><a class="" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.600-7 8-7s8 3 8 7"/></svg>Profile</a><div class="pro"><b>Go Pro</b>Lessons, unlimited practice and detailed insights. Coming soon.</div></aside>
+<main class="main">
+  <h1 class="hello">Ready when you are, SunnyOtter21</h1><p class="sub">172 players are online and 41 games are running right now.</p>
+  <div class="big"><button class="btn b-coral"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M13 2L4 14h6l-1 8 9-12h-6z"/></svg><div>Quick play<span>Jump into any open game</span></div></button>
+  <button class="btn b-white"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.500" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg><div>Create a room<span>Pick the game, topic and level</span></div></button></div>
+  <div class="row"><h2>Rooms</h2><span class="sp"></span><span class="chip on">All</span><span class="chip">Open to join</span><span class="chip">Vocabulary</span><span class="chip">Listening</span></div>
+  <div class="grid"><div class="card"><div class="mi v"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4.500A2.500 2.500 0 0 1 7.500 2H19v17H7.500A2.500 2.500 0 0 0 5 21.500z"/><path d="M5 21.500A2.500 2.500 0 0 0 7.500 22H19"/><path d="M9.500 13l2.500-6 2.500 6M10.300 11h3.400"/></svg></div>
+<h3>Vocabulary Battle</h3><div class="a"><button class="sm j">Join</button></div><p>Travel · 10 questions · 8s</p>
+<div class="meta"><div class="seats"><span class="seat" style="background:#19b394">M</span><span class="seat e">+</span><span class="seat e">+</span><span class="seat e">+</span></div><span class="lv Medium">Medium</span><span class="stt">3 seats open</span></div></div><div class="card"><div class="mi l"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14v-2a8 8 0 0 1 16 0v2"/><rect x="2.500" y="13" width="5" height="7" rx="2"/><rect x="16.500" y="13" width="5" height="7" rx="2"/></svg></div>
+<h3>Listening Rush</h3><div class="a"><button class="sm j">Join</button></div><p>Food & Drink · 15 sentences · 20s</p>
+<div class="meta"><div class="seats"><span class="seat" style="background:#19b394">A</span><span class="seat" style="background:#3f9cf5">T</span><span class="seat e">+</span></div><span class="lv Easy">Easy</span><span class="stt">1 seat open</span></div></div><div class="card"><div class="mi l"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14v-2a8 8 0 0 1 16 0v2"/><rect x="2.500" y="13" width="5" height="7" rx="2"/><rect x="16.500" y="13" width="5" height="7" rx="2"/></svg></div>
+<h3>Listening Rush</h3><div class="a"><button class="sm j">Join</button></div><p>Random · 20 sentences · 30s</p>
+<div class="meta"><div class="seats"><span class="seat" style="background:#8b6cf0">P</span><span class="seat" style="background:#19b394">K</span><span class="seat e">+</span><span class="seat e">+</span></div><span class="lv Hard">Hard</span><span class="stt">2 seats open</span></div></div><div class="card"><div class="mi l"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14v-2a8 8 0 0 1 16 0v2"/><rect x="2.500" y="13" width="5" height="7" rx="2"/><rect x="16.500" y="13" width="5" height="7" rx="2"/></svg></div>
+<h3>Listening Rush</h3><div class="a"><button class="sm w">Watch</button></div><p>Daily Life · 10 sentences · 20s</p>
+<div class="meta"><div class="seats"><span class="seat" style="background:#3f9cf5">M</span><span class="seat" style="background:#ff6b4a">G</span></div><span class="lv Medium">Medium</span><span class="stt">Round 4/10</span></div></div><div class="card"><div class="mi v"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4.500A2.500 2.500 0 0 1 7.500 2H19v17H7.500A2.500 2.500 0 0 0 5 21.500z"/><path d="M5 21.500A2.500 2.500 0 0 0 7.500 22H19"/><path d="M9.500 13l2.500-6 2.500 6M10.300 11h3.400"/></svg></div>
+<h3>Vocabulary Battle</h3><div class="a"><button class="sm j">Join</button></div><p>Family · 10 questions · 6s</p>
+<div class="meta"><div class="seats"><span class="seat" style="background:#8b6cf0">L</span><span class="seat" style="background:#8b6cf0">A</span><span class="seat e">+</span><span class="seat e">+</span></div><span class="lv Medium">Medium</span><span class="stt">2 seats open</span></div></div><div class="card"><div class="mi v"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4.500A2.500 2.500 0 0 1 7.500 2H19v17H7.500A2.500 2.500 0 0 0 5 21.500z"/><path d="M5 21.500A2.500 2.500 0 0 0 7.500 22H19"/><path d="M9.500 13l2.500-6 2.500 6M10.300 11h3.400"/></svg></div>
+<h3>Vocabulary Battle</h3><div class="a"><button class="sm w">Watch</button></div><p>Food & Drink · 10 questions · 10s</p>
+<div class="meta"><div class="seats"><span class="seat" style="background:#ff6b4a">C</span><span class="seat" style="background:#3f9cf5">N</span><span class="seat" style="background:#dba516">T</span></div><span class="lv Easy">Easy</span><span class="stt">Round 7/10</span></div></div><div class="card"><div class="mi v"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4.500A2.500 2.500 0 0 1 7.500 2H19v17H7.500A2.500 2.500 0 0 0 5 21.500z"/><path d="M5 21.500A2.500 2.500 0 0 0 7.500 22H19"/><path d="M9.500 13l2.500-6 2.500 6M10.300 11h3.400"/></svg></div>
+<h3>Vocabulary Battle</h3><div class="a"><button class="sm w">Watch</button></div><p>Transportation · 20 questions · 8s</p>
+<div class="meta"><div class="seats"><span class="seat" style="background:#3f9cf5">T</span><span class="seat" style="background:#8b6cf0">H</span><span class="seat e">+</span><span class="seat e">+</span></div><span class="lv Hard">Hard</span><span class="stt">Round 2/20</span></div></div><div class="card"><div class="mi l"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14v-2a8 8 0 0 1 16 0v2"/><rect x="2.500" y="13" width="5" height="7" rx="2"/><rect x="16.500" y="13" width="5" height="7" rx="2"/></svg></div>
+<h3>Listening Rush</h3><div class="a"><button class="sm w">Watch</button></div><p>Daily Life · 20 sentences · 30s</p>
+<div class="meta"><div class="seats"><span class="seat" style="background:#dba516">G</span><span class="seat" style="background:#e2559a">A</span><span class="seat" style="background:#e2559a">T</span><span class="seat e">+</span></div><span class="lv Hard">Hard</span><span class="stt">Round 12/20</span></div></div></div>
+</main>
+<aside class="right">
+  <div class="mecard"><div class="top"><div class="av">S</div><div><b>SunnyOtter21</b><div class="r">1200</div></div></div>
+    <div class="prog"><i></i></div><small><b>100 more</b> to reach Gold I · now Silver II</small></div>
+  <h4>Online <span>172</span></h4><div class="pl"><i style="background:#19b394">M</i><div>mynga95<em>playing</em></div><span>2181</span></div><div class="pl"><i style="background:#8b6cf0">A</i><div>anhvu90<em>in the lobby</em></div><span>2065</span></div><div class="pl"><i style="background:#8b6cf0">M</i><div>ms_lan<em>playing</em></div><span>1891</span></div><div class="pl"><i style="background:#e2559a">P</i><div>pierre_l<em>in the lobby</em></div><span>1812</span></div><div class="pl"><i style="background:#dba516">K</i><div>khoadz<em>in the lobby</em></div><span>1705</span></div><div class="pl"><i style="background:#19b394">G</i><div>gaucon98<em>playing</em></div><span>1658</span></div><div class="pl"><i style="background:#8b6cf0">L</i><div>linhngoc<em>in the lobby</em></div><span>1653</span></div><div class="pl"><i style="background:#8b6cf0">A</i><div>acphat1<em>in the lobby</em></div><span>1646</span></div><div class="pl"><i style="background:#3f9cf5">T</i><div>thinhquang<em>watching</em></div><span>1644</span></div><div class="pl"><i style="background:#3f9cf5">C</i><div>camille_b<em>playing</em></div><span>1640</span></div><div class="pl"><i style="background:#dba516">T</i><div>teacher_mike<em>playing</em></div><span>1624</span></div>
+</aside></div>
+</section>
+<section class="screen" id="game">
+<div class="g">
+  <div class="gtop"><a href="#lobby"><button class="x">&times;</button></a><div class="track"><i></i></div><span class="dsp" style="font-weight:600;color:var(--soft)">7 / 10</span><span class="time"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.500 2M9 2h6"/></svg>4s</span></div>
+  <div class="ps"><div class="p you"><i style="background:#3f9cf5">Y</i><div><b>You</b><small>Thinking...</small></div><strong>724</strong></div><div class="p "><i style="background:#19b394">C</i><div><b>camille_b</b><small>Locked in</small></div><strong>812</strong></div><div class="p "><i style="background:#8b6cf0">N</i><div><b>nhivu</b><small>Thinking...</small></div><strong>655</strong></div><div class="p "><i style="background:#ff6b4a">T</i><div><b>tunam2k5</b><small>Locked in</small></div><strong>590</strong></div></div>
+  <div class="ask">What does this word mean?</div><div class="word">passport</div>
+  <div class="opts"><button class="o"><kbd>1</kbd>hành lý</button><button class="o"><kbd>2</kbd>hộ chiếu</button><button class="o"><kbd>3</kbd>bản đồ</button><button class="o"><kbd>4</kbd>khách sạn</button></div>
+  <div class="rx"><span class="chip">Good luck!</span><span class="chip">Nice!</span><span class="chip">Awesome!</span><span class="chip">Wow!</span><span class="chip">So close!</span><span class="chip">Too fast!</span><span class="chip">GG!</span><span class="chip">One more round?</span></div>
+</div>
+</section>
+<!-- mockup navigation, not part of the design -->
+<nav class="mock-switch"><span>C · Chunky</span><a href="#lobby">Lobby</a><a href="#game">Game</a><a href="index.html">All mockups</a></nav>
+</body>
+</html>

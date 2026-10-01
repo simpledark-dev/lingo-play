@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LingoPlay mockup: D · Street sign</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Anton&family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}body{margin:0}button{font:inherit;cursor:pointer}a{color:inherit}svg{display:block}
+
+.screen{display:none}.screen:target{display:block}body:not(:has(.screen:target)) #lobby{display:block}
+.mock-switch{position:fixed;right:14px;bottom:14px;z-index:99;display:flex;gap:2px;padding:4px;border-radius:999px;background:#111;box-shadow:0 6px 20px rgba(0,0,0,.35);font:600 12px/1 system-ui,sans-serif}
+.mock-switch a{color:#ddd;text-decoration:none;padding:8px 12px;border-radius:999px}.mock-switch a:hover{background:#333;color:#fff}.mock-switch span{color:#888;padding:8px 6px 8px 12px}
+
+
+:root{--ink:#1a1714;--cream:#f6ecd6;--red:#d42b1e;--yellow:#f8c630;--teal:#0e7c7b;--board:#1e3a32}
+body{background:var(--cream);color:var(--ink);font:500 15px/1.45 "Be Vietnam Pro",sans-serif}
+.dsp{font-family:"Anton",sans-serif;text-transform:uppercase;letter-spacing:.02em;font-weight:400}
+a{text-decoration:none}
+.awning{height:22px;background:repeating-linear-gradient(90deg,var(--red) 0 44px,var(--cream) 44px 88px);border-bottom:3px solid var(--ink)}
+.wrap{max-width:1220px;margin:0 auto;padding:0 22px 80px}
+.sign{display:flex;align-items:stretch;gap:0;margin-top:20px;border:3px solid var(--ink);box-shadow:6px 6px 0 var(--ink);background:var(--red)}
+.sign .name{font:400 54px/1 "Anton";color:var(--yellow);padding:14px 22px;text-transform:uppercase;letter-spacing:.02em}
+.sign .tag{background:var(--yellow);border-left:3px solid var(--ink);padding:10px 18px;display:flex;flex-direction:column;justify-content:center;font-weight:700;line-height:1.2}
+.sign .tag small{font-weight:500}
+.sign nav{margin-left:auto;display:flex;background:var(--cream);border-left:3px solid var(--ink)}
+.sign nav a{display:flex;align-items:center;padding:0 18px;font:400 19px "Anton";text-transform:uppercase;border-right:3px solid var(--ink);letter-spacing:.03em}
+.sign nav a:last-child{border-right:0}.sign nav a.on{background:var(--teal);color:#fff}.sign nav a sup{font:700 9px "Be Vietnam Pro";margin-left:4px;color:var(--red)}
+.cols{display:grid;grid-template-columns:minmax(0,1fr) 330px;gap:26px;margin-top:28px}
+.hd{display:flex;align-items:center;gap:12px;margin-bottom:16px}.hd h2{font:400 34px/1 "Anton";margin:0;text-transform:uppercase}
+.hd .n{background:var(--ink);color:var(--yellow);font:400 18px "Anton";padding:4px 10px}
+.stamp{border:3px solid var(--ink);background:var(--yellow);font:400 20px "Anton";text-transform:uppercase;padding:9px 18px;box-shadow:4px 4px 0 var(--ink);letter-spacing:.03em}
+.stamp:hover{transform:translate(2px,2px);box-shadow:2px 2px 0 var(--ink)}.stamp.r{background:var(--red);color:#fff}.stamp.t{background:var(--teal);color:#fff}.hd .sp{margin-left:auto}
+.tix{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
+.tk{display:grid;grid-template-columns:86px 1fr;border:3px solid var(--ink);background:#fffaf0;box-shadow:5px 5px 0 var(--ink)}
+.stub{border-right:3px dashed var(--ink);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:10px 4px;background:var(--yellow)}
+.tk.l .stub{background:#bfe3df}.stub small{font:700 10px "Be Vietnam Pro";letter-spacing:.12em;text-transform:uppercase}.stub b{font:400 32px/1 "Anton"}
+.stub svg{width:24px;height:24px;margin-bottom:4px}
+.bd{padding:12px 14px}.bd h3{margin:0;font:400 24px/1.05 "Anton";text-transform:uppercase;letter-spacing:.02em}
+.bd .m{font-size:13px;margin:4px 0 9px}.bd .m b{background:var(--ink);color:#fff;padding:1px 6px;font-weight:600;margin-right:6px}
+.bd .m b.Easy{background:var(--teal)}.bd .m b.Hard{background:var(--red)}
+.pp{font-size:14px;font-weight:600}.pp span{font-weight:500;color:#6b6257;margin-right:8px}
+.ft{display:flex;align-items:center;justify-content:space-between;margin-top:10px;padding-top:9px;border-top:2px solid var(--ink)}
+.dots{display:flex;gap:5px;align-items:center;font-size:13px;font-weight:700}.dots i{width:13px;height:13px;border:2px solid var(--ink);border-radius:50%;background:var(--ink)}.dots i.e{background:none}
+.mini{border:2px solid var(--ink);font:400 16px "Anton";text-transform:uppercase;padding:4px 14px;background:var(--red);color:#fff;letter-spacing:.04em}.mini.w{background:#fffaf0;color:var(--ink)}
+.board{background:var(--board);color:#eef3e9;border:8px solid #7b5a3a;box-shadow:5px 5px 0 var(--ink);padding:16px 18px;font-family:"Be Vietnam Pro"}
+.board h4{margin:0 0 10px;font:400 24px "Anton";text-transform:uppercase;letter-spacing:.04em;color:var(--yellow);display:flex;justify-content:space-between}
+.board .l{display:flex;gap:8px;padding:5px 0;border-bottom:1px dashed rgba(255,255,255,.22);font-weight:600}.board .l small{width:22px;opacity:.6}.board .l b{margin-left:auto;font:400 17px "Anton";letter-spacing:.04em}
+.board .l.me{color:var(--yellow)}.board .l i{font-style:normal;font-size:11px;opacity:.65;font-weight:500;align-self:center}
+.mine{border:3px solid var(--ink);background:#fffaf0;box-shadow:5px 5px 0 var(--ink);padding:14px 16px;margin-bottom:22px}
+.mine .r{font:400 56px/1 "Anton"}.mine .t{display:inline-block;background:var(--ink);color:var(--yellow);font:400 17px "Anton";text-transform:uppercase;padding:3px 10px;margin-left:10px;vertical-align:top;margin-top:8px}
+.bar{height:16px;border:3px solid var(--ink);margin:10px 0 6px;background:repeating-linear-gradient(135deg,#fffaf0 0 6px,#eadfc6 6px 12px)}.bar i{display:block;height:100%;width:5%;background:var(--red)}
+/* game */
+.gm{display:grid;grid-template-columns:250px minmax(0,1fr);gap:26px;margin-top:28px}
+.chalk{background:var(--board);border:10px solid #7b5a3a;box-shadow:6px 6px 0 var(--ink);color:#f4f7ef;text-align:center;padding:26px 20px 30px}
+.chalk small{font-weight:600;letter-spacing:.14em;text-transform:uppercase;opacity:.75}.chalk .w{font:400 104px/1 "Anton";text-transform:uppercase;letter-spacing:.03em;margin:8px 0 14px}
+.fuse{height:14px;border:2px solid #f4f7ef;max-width:440px;margin:0 auto}.fuse i{display:block;height:100%;width:62%;background:var(--yellow)}
+.plates{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:22px}
+.plate{border:3px solid var(--ink);background:#fffaf0;box-shadow:5px 5px 0 var(--ink);padding:16px;font:600 24px "Be Vietnam Pro";display:flex;gap:14px;align-items:center;text-align:left}
+.plate:hover{background:var(--yellow)}.plate b{font:400 26px "Anton";background:var(--ink);color:var(--yellow);width:40px;height:40px;display:grid;place-items:center;flex:none}
+.sc{border:3px solid var(--ink);background:#fffaf0;box-shadow:5px 5px 0 var(--ink)}.sc h4{margin:0;background:var(--ink);color:var(--yellow);font:400 20px "Anton";text-transform:uppercase;padding:6px 12px;display:flex;justify-content:space-between}
+.sc div{display:flex;padding:9px 12px;border-bottom:2px solid var(--ink);font-weight:700;gap:8px}.sc div:last-child{border:0}.sc div b{margin-left:auto;font:400 22px/1 "Anton"}.sc .you{background:var(--yellow)}
+.sc small{font-weight:500;color:#6b6257;display:block;font-size:12px}
+.say{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px}.say button{border:2px solid var(--ink);background:#fffaf0;font-weight:700;padding:5px 10px;font-size:13px}.say button:hover{background:var(--teal);color:#fff}
+
+</style>
+</head>
+<body>
+<section class="screen" id="lobby">
+<div class="awning"></div><div class="wrap"><header class="sign"><div class="name">LingoPlay</div><div class="tag">Play together.<small>Learn faster.</small></div>
+<nav><a class="on" href="#lobby">Tables</a><a href="#">Daily<sup>soon</sup></a><a href="#">Rankings</a><a href="#">Learn<sup>soon</sup></a><a href="#">Me</a></nav></header>
+<div class="cols"><main>
+  <div class="hd"><h2>Open tables</h2><span class="n">41</span><span class="sp"></span><button class="stamp r">Quick play</button><button class="stamp">New table</button></div>
+  <div class="tix"><div class="tk "><div class="stub"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4.500A2.500 2.500 0 0 1 7.500 2H19v17H7.500A2.500 2.500 0 0 0 5 21.500z"/><path d="M5 21.500A2.500 2.500 0 0 0 7.500 22H19"/><path d="M9.500 13l2.500-6 2.500 6M10.300 11h3.400"/></svg><small>Table</small><b>636</b></div>
+<div class="bd"><h3>Vocabulary Battle</h3><div class="m"><b class="Medium">Medium</b>Travel · 10 questions · 8s</div>
+<div class="pp">mynga95 <span>1373</span></div>
+<div class="ft"><div class="dots"><i></i><i class="e"></i><i class="e"></i><i class="e"></i><span style="margin-left:6px">3 free</span></div><button class="mini">Join</button></div></div></div><div class="tk l"><div class="stub"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14v-2a8 8 0 0 1 16 0v2"/><rect x="2.500" y="13" width="5" height="7" rx="2"/><rect x="16.500" y="13" width="5" height="7" rx="2"/></svg><small>Table</small><b>635</b></div>
+<div class="bd"><h3>Listening Rush</h3><div class="m"><b class="Easy">Easy</b>Food & Drink · 15 sentences · 20s</div>
+<div class="pp">anhvu90 <span>1289</span>thocon_xinh <span>1204</span></div>
+<div class="ft"><div class="dots"><i></i><i></i><i class="e"></i><span style="margin-left:6px">1 free</span></div><button class="mini">Join</button></div></div></div><div class="tk l"><div class="stub"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14v-2a8 8 0 0 1 16 0v2"/><rect x="2.500" y="13" width="5" height="7" rx="2"/><rect x="16.500" y="13" width="5" height="7" rx="2"/></svg><small>Table</small><b>634</b></div>
+<div class="bd"><h3>Listening Rush</h3><div class="m"><b class="Hard">Hard</b>Random · 20 sentences · 30s</div>
+<div class="pp">pierre_l <span>1812</span>khoadz <span>1705</span></div>
+<div class="ft"><div class="dots"><i></i><i></i><i class="e"></i><i class="e"></i><span style="margin-left:6px">2 free</span></div><button class="mini">Join</button></div></div></div><div class="tk l"><div class="stub"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14v-2a8 8 0 0 1 16 0v2"/><rect x="2.500" y="13" width="5" height="7" rx="2"/><rect x="16.500" y="13" width="5" height="7" rx="2"/></svg><small>Table</small><b>606</b></div>
+<div class="bd"><h3>Listening Rush</h3><div class="m"><b class="Medium">Medium</b>Daily Life · 10 sentences · 20s</div>
+<div class="pp">ms_lan <span>1891</span>gaucon98 <span>1658</span></div>
+<div class="ft"><div class="dots"><i></i><i></i><span style="margin-left:6px">round 4/10</span></div><button class="mini w">Watch</button></div></div></div><div class="tk "><div class="stub"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4.500A2.500 2.500 0 0 1 7.500 2H19v17H7.500A2.500 2.500 0 0 0 5 21.500z"/><path d="M5 21.500A2.500 2.500 0 0 0 7.500 22H19"/><path d="M9.500 13l2.500-6 2.500 6M10.300 11h3.400"/></svg><small>Table</small><b>633</b></div>
+<div class="bd"><h3>Vocabulary Battle</h3><div class="m"><b class="Medium">Medium</b>Family · 10 questions · 6s</div>
+<div class="pp">linhngoc <span>1653</span>acphat1 <span>1646</span></div>
+<div class="ft"><div class="dots"><i></i><i></i><i class="e"></i><i class="e"></i><span style="margin-left:6px">2 free</span></div><button class="mini">Join</button></div></div></div><div class="tk "><div class="stub"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4.500A2.500 2.500 0 0 1 7.500 2H19v17H7.500A2.500 2.500 0 0 0 5 21.500z"/><path d="M5 21.500A2.500 2.500 0 0 0 7.500 22H19"/><path d="M9.500 13l2.500-6 2.500 6M10.300 11h3.400"/></svg><small>Table</small><b>612</b></div>
+<div class="bd"><h3>Vocabulary Battle</h3><div class="m"><b class="Easy">Easy</b>Food & Drink · 10 questions · 10s</div>
+<div class="pp">camille_b <span>1640</span>nhivu <span>1577</span>tunam2k5 <span>1571</span></div>
+<div class="ft"><div class="dots"><i></i><i></i><i></i><span style="margin-left:6px">round 7/10</span></div><button class="mini w">Watch</button></div></div></div><div class="tk "><div class="stub"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4.500A2.500 2.500 0 0 1 7.500 2H19v17H7.500A2.500 2.500 0 0 0 5 21.500z"/><path d="M5 21.500A2.500 2.500 0 0 0 7.500 22H19"/><path d="M9.500 13l2.500-6 2.500 6M10.300 11h3.400"/></svg><small>Table</small><b>632</b></div>
+<div class="bd"><h3>Vocabulary Battle</h3><div class="m"><b class="Hard">Hard</b>Transportation · 20 questions · 8s</div>
+<div class="pp">teacher_mike <span>1624</span>huyuyen <span>1615</span></div>
+<div class="ft"><div class="dots"><i></i><i></i><i class="e"></i><i class="e"></i><span style="margin-left:6px">round 2/20</span></div><button class="mini w">Watch</button></div></div></div><div class="tk l"><div class="stub"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14v-2a8 8 0 0 1 16 0v2"/><rect x="2.500" y="13" width="5" height="7" rx="2"/><rect x="16.500" y="13" width="5" height="7" rx="2"/></svg><small>Table</small><b>631</b></div>
+<div class="bd"><h3>Listening Rush</h3><div class="m"><b class="Hard">Hard</b>Daily Life · 20 sentences · 30s</div>
+<div class="pp">giangchi92 <span>1616</span>ateocuimia <span>1594</span>timnguyen <span>1570</span></div>
+<div class="ft"><div class="dots"><i></i><i></i><i></i><i class="e"></i><span style="margin-left:6px">round 12/20</span></div><button class="mini w">Watch</button></div></div></div></div></main>
+<aside>
+  <div class="mine"><span class="r">1200</span><span class="t">Silver II</span><div class="bar"><i></i></div><b>100 more</b> to Gold I</div>
+  <div class="board"><h4>Who's here <span>172</span></h4><div class="l"><small>1</small>mynga95 <i>playing</i><b>2181</b></div><div class="l"><small>2</small>anhvu90<b>2065</b></div><div class="l"><small>3</small>ms_lan <i>playing</i><b>1891</b></div><div class="l"><small>4</small>pierre_l<b>1812</b></div><div class="l"><small>5</small>khoadz<b>1705</b></div><div class="l"><small>6</small>gaucon98 <i>playing</i><b>1658</b></div><div class="l"><small>7</small>linhngoc<b>1653</b></div><div class="l"><small>8</small>acphat1<b>1646</b></div><div class="l"><small>9</small>thinhquang<b>1644</b></div><div class="l"><small>10</small>camille_b <i>playing</i><b>1640</b></div><div class="l"><small>11</small>teacher_mike <i>playing</i><b>1624</b></div><div class="l"><small>12</small>phuongnghia<b>1621</b></div><div class="l me"><small>131</small>SunnyOtter21 (you)<b>1200</b></div></div>
+</aside></div></div>
+</section>
+<section class="screen" id="game">
+<div class="awning"></div><div class="wrap"><header class="sign"><div class="name">LingoPlay</div><div class="tag">Play together.<small>Learn faster.</small></div>
+<nav><a class="on" href="#lobby">Tables</a><a href="#">Daily<sup>soon</sup></a><a href="#">Rankings</a><a href="#">Learn<sup>soon</sup></a><a href="#">Me</a></nav></header>
+<div class="gm"><aside><a href="#lobby"><button class="stamp" style="margin-bottom:20px">&larr; Leave</button></a>
+  <div class="sc"><h4>Table 612 <span>7/10</span></h4><div class=""><span>camille_b<small>answered</small></span><b>812</b></div><div class="you"><span>You<small>thinking</small></span><b>724</b></div><div class=""><span>nhivu<small>thinking</small></span><b>655</b></div><div class=""><span>tunam2k5<small>answered</small></span><b>590</b></div></div>
+  <div class="say"><button>Good luck!</button><button>Nice!</button><button>Awesome!</button><button>Wow!</button><button>So close!</button><button>Too fast!</button><button>GG!</button><button>One more round?</button></div></aside>
+<main><div class="chalk"><small>Round 7 · what does it mean?</small><div class="w">passport</div><div class="fuse"><i></i></div></div>
+  <div class="plates"><button class="plate"><b>A</b>hành lý</button><button class="plate"><b>B</b>hộ chiếu</button><button class="plate"><b>C</b>bản đồ</button><button class="plate"><b>D</b>khách sạn</button></div></main></div></div>
+</section>
+<!-- mockup navigation, not part of the design -->
+<nav class="mock-switch"><span>D · Street sign</span><a href="#lobby">Lobby</a><a href="#game">Game</a><a href="index.html">All mockups</a></nav>
+</body>
+</html>

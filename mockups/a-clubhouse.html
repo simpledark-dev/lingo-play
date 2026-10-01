@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LingoPlay mockup: A · Clubhouse</title>
+
+<style>
+*,*::before,*::after{box-sizing:border-box}body{margin:0}button{font:inherit;cursor:pointer}a{color:inherit}svg{display:block}
+
+.screen{display:none}.screen:target{display:block}body:not(:has(.screen:target)) #lobby{display:block}
+.mock-switch{position:fixed;right:14px;bottom:14px;z-index:99;display:flex;gap:2px;padding:4px;border-radius:999px;background:#111;box-shadow:0 6px 20px rgba(0,0,0,.35);font:600 12px/1 system-ui,sans-serif}
+.mock-switch a{color:#ddd;text-decoration:none;padding:8px 12px;border-radius:999px}.mock-switch a:hover{background:#333;color:#fff}.mock-switch span{color:#888;padding:8px 6px 8px 12px}
+
+
+body{background:#e8e5dd;color:#222;font:13px/1.45 Verdana,"DejaVu Sans",Geneva,sans-serif}
+a{color:#1a5fa8;text-decoration:none}a:hover{text-decoration:underline}
+.top{background:#2d4a3a;color:#fff}
+.top .in{max-width:1180px;margin:0 auto;display:flex;align-items:center;gap:22px;padding:0 14px;height:42px}
+.brand{font:bold 19px/1 Georgia,"Times New Roman",serif;letter-spacing:-.3px}.brand i{color:#f2c14e;font-style:normal}
+.top nav{display:flex;height:100%}
+.top nav a{color:#cfdcd3;padding:0 13px;display:flex;align-items:center;height:100%}
+.top nav a.on{background:#e8e5dd;color:#222;font-weight:bold}
+.top nav a:hover{text-decoration:none;color:#fff}.top nav a.on:hover{color:#222}
+.top .me{margin-left:auto;color:#cfdcd3}.top .me b{color:#fff}.top .me a{color:#f2c14e;margin-left:10px}
+.wrap{max-width:1180px;margin:0 auto;padding:12px 14px 60px;display:grid;grid-template-columns:minmax(0,1fr) 262px;gap:14px}
+.bar{display:flex;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap}
+.btn{background:#f7f6f2;border:1px solid #a9a598;border-radius:3px;padding:5px 12px;color:#222;box-shadow:inset 0 1px 0 #fff}
+.btn:hover{background:#fff}
+.btn.go{background:#3d7a4f;border-color:#2c5c3a;color:#fff;font-weight:bold;box-shadow:inset 0 1px 0 #5c9b6e}
+.btn.go:hover{background:#468a5a}
+.bar select,.bar input{font:inherit;padding:4px 6px;border:1px solid #a9a598;border-radius:3px;background:#fff}
+.bar .count{margin-left:auto;color:#666}
+table{width:100%;border-collapse:collapse;background:#fff;border:1px solid #b9b5a8}
+th{background:#d9d5c9;text-align:left;font-weight:bold;padding:5px 8px;border-bottom:1px solid #b9b5a8;font-size:12px;white-space:nowrap}
+td{padding:6px 8px;border-bottom:1px solid #e6e3da;vertical-align:top}
+tr:nth-child(even) td{background:#f8f7f3}tr:hover td{background:#fff8dc}
+td.n{color:#777;width:44px}td.g{white-space:nowrap}td.g b{display:block}td.g span,.dim{color:#777;font-size:12px}
+.pl a{margin-right:2px}.pl em{font-style:normal;color:#777;margin-right:9px}
+.free{color:#3d7a4f}.st{white-space:nowrap}.st i{display:inline-block;width:8px;height:8px;border-radius:50%;background:#3d7a4f;margin-right:5px}
+.st.w i{background:#d9a514}
+td.act{text-align:right;white-space:nowrap}
+.box{background:#fff;border:1px solid #b9b5a8;margin-bottom:12px}
+.box h3{margin:0;background:#d9d5c9;border-bottom:1px solid #b9b5a8;padding:5px 9px;font-size:12px;display:flex;justify-content:space-between}
+.box .pad{padding:9px}
+.rating{font:bold 26px/1 Georgia,serif}.title{color:#8a6a12;font-weight:bold}
+.meter{height:7px;background:#e6e3da;border:1px solid #c9c5b8;margin:8px 0 5px}.meter i{display:block;height:100%;background:#d9a514}
+.tabs{display:flex;border-bottom:1px solid #b9b5a8;background:#eeece5}.tabs a{padding:5px 10px;color:#444;border-right:1px solid #d9d5c9}.tabs a.on{background:#fff;font-weight:bold;color:#222;margin-bottom:-1px}
+.plist{max-height:430px;overflow:auto}.plist div{display:flex;gap:6px;padding:3px 9px;border-bottom:1px solid #f0eee8}.plist div.me{background:#fff8dc;font-weight:bold}
+.plist i{width:7px;height:7px;border-radius:50%;margin-top:6px;background:#3d7a4f;flex:none}.plist i.playing{background:#c2571a}.plist i.watching{background:#1a5fa8}
+.plist span{margin-left:auto;color:#555}.plist small{color:#999;width:26px;text-align:right}
+.foot{color:#777;font-size:11px;padding:6px 9px}
+/* game */
+.gwrap{max-width:1040px;margin:0 auto;padding:12px 14px 60px;display:grid;grid-template-columns:230px minmax(0,1fr) 190px;gap:14px}
+.crumb{grid-column:1/-1;display:flex;gap:10px;align-items:baseline}.crumb b{font-size:14px}
+.q{background:#fff;border:1px solid #b9b5a8;padding:22px 26px 26px;text-align:center}
+.q .lab{color:#777;font-size:12px}.q .word{font:bold 46px/1.1 Georgia,serif;margin:10px 0 4px}
+.timer{height:9px;border:1px solid #b9b5a8;background:#f0eee8;margin:16px 0}.timer i{display:block;height:100%;width:62%;background:#3d7a4f}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:8px;text-align:left}
+.opt{background:#f7f6f2;border:1px solid #a9a598;border-radius:3px;padding:11px 12px;font-size:16px;box-shadow:inset 0 1px 0 #fff;text-align:left}
+.opt:hover{background:#fff8dc;border-color:#8a6a12}.opt b{color:#777;margin-right:9px;font-weight:normal}
+.sc td{padding:5px 8px}.sc td:last-child{text-align:right;font-weight:bold}.sc .you td{background:#fff8dc}
+.rx{display:flex;flex-direction:column;gap:5px}.rx .btn{text-align:left}
+.rounds{display:flex;gap:3px;margin-top:8px}.rounds i{flex:1;height:6px;background:#e6e3da}.rounds i.ok{background:#3d7a4f}.rounds i.no{background:#b33}.rounds i.now{background:#d9a514}
+
+</style>
+</head>
+<body>
+<section class="screen" id="lobby">
+<div class="top"><div class="in"><div class="brand">lingo<i>play</i></div>
+<nav><a class="on" href="#lobby">tables</a><a href="#">rankings</a><a href="#">daily challenge</a><a href="#">learn</a><a href="#">community</a></nav>
+<div class="me">signed in as <b>SunnyOtter21</b> (1200) <a href="#">go pro</a> <a href="#">log out</a></div></div></div>
+<div class="wrap">
+<div>
+  <div class="bar"><button class="btn go">quick play</button><button class="btn">new table...</button>
+  <select><option>all games</option></select><select><option>all levels</option></select><input placeholder="find table or player" size="22">
+  <span class="count">41 tables, 172 players online</span></div>
+  <table><tr><th>#</th><th>game</th><th>topic</th><th>level</th><th>players</th><th>status</th><th></th></tr>
+  <tr><td class="n">636</td><td class="g"><b>Vocabulary Battle</b><span>10 questions, 8s each</span></td><td>Travel</td><td>medium</td><td class="pl"><a href="#">mynga95</a> <em>1373</em><span class="free">+ 3 free</span></td><td><span class="st w"><i></i>waiting</span></td><td class="act"><button class="btn go">join</button></td></tr><tr><td class="n">635</td><td class="g"><b>Listening Rush</b><span>15 sentences, 20s each</span></td><td>Food & Drink</td><td>easy</td><td class="pl"><a href="#">anhvu90</a> <em>1289</em><a href="#">thocon_xinh</a> <em>1204</em><span class="free">+ 1 free</span></td><td><span class="st w"><i></i>waiting</span></td><td class="act"><button class="btn go">join</button></td></tr><tr><td class="n">634</td><td class="g"><b>Listening Rush</b><span>20 sentences, 30s each</span></td><td>Random</td><td>hard</td><td class="pl"><a href="#">pierre_l</a> <em>1812</em><a href="#">khoadz</a> <em>1705</em><span class="free">+ 2 free</span></td><td><span class="st w"><i></i>waiting</span> <span class="dim">(1 watching)</span></td><td class="act"><button class="btn go">join</button></td></tr><tr><td class="n">606</td><td class="g"><b>Listening Rush</b><span>10 sentences, 20s each</span></td><td>Daily Life</td><td>medium</td><td class="pl"><a href="#">ms_lan</a> <em>1891</em><a href="#">gaucon98</a> <em>1658</em></td><td><span class="st"><i></i>round 4/10</span> <span class="dim">(3 watching)</span></td><td class="act"><button class="btn">watch</button></td></tr><tr><td class="n">633</td><td class="g"><b>Vocabulary Battle</b><span>10 questions, 6s each</span></td><td>Family</td><td>medium</td><td class="pl"><a href="#">linhngoc</a> <em>1653</em><a href="#">acphat1</a> <em>1646</em><span class="free">+ 2 free</span></td><td><span class="st w"><i></i>waiting</span></td><td class="act"><button class="btn go">join</button></td></tr><tr><td class="n">612</td><td class="g"><b>Vocabulary Battle</b><span>10 questions, 10s each</span></td><td>Food & Drink</td><td>easy</td><td class="pl"><a href="#">camille_b</a> <em>1640</em><a href="#">nhivu</a> <em>1577</em><a href="#">tunam2k5</a> <em>1571</em></td><td><span class="st"><i></i>round 7/10</span> <span class="dim">(1 watching)</span></td><td class="act"><button class="btn">watch</button></td></tr><tr><td class="n">632</td><td class="g"><b>Vocabulary Battle</b><span>20 questions, 8s each</span></td><td>Transportation</td><td>hard</td><td class="pl"><a href="#">teacher_mike</a> <em>1624</em><a href="#">huyuyen</a> <em>1615</em></td><td><span class="st"><i></i>round 2/20</span></td><td class="act"><button class="btn">watch</button></td></tr><tr><td class="n">631</td><td class="g"><b>Listening Rush</b><span>20 sentences, 30s each</span></td><td>Daily Life</td><td>hard</td><td class="pl"><a href="#">giangchi92</a> <em>1616</em><a href="#">ateocuimia</a> <em>1594</em><a href="#">timnguyen</a> <em>1570</em></td><td><span class="st"><i></i>round 12/20</span> <span class="dim">(2 watching)</span></td><td class="act"><button class="btn">watch</button></td></tr><tr><td class="n">629</td><td class="g"><b>Vocabulary Battle</b><span>15 questions, 10s each</span></td><td>Nature</td><td>easy</td><td class="pl"><a href="#">be_tuan</a> <em>1089</em><a href="#">hanoi36</a> <em>1122</em></td><td><span class="st"><i></i>round 9/15</span></td><td class="act"><button class="btn">watch</button></td></tr><tr><td class="n">628</td><td class="g"><b>Listening Rush</b><span>15 sentences, 20s each</span></td><td>Travel</td><td>medium</td><td class="pl"><a href="#">sakura88</a> <em>1538</em><a href="#">danang_boy</a> <em>1553</em><a href="#">cuhuoi</a> <em>1283</em><a href="#">meomeo2k4</a> <em>1310</em></td><td><span class="st"><i></i>round 1/15</span> <span class="dim">(5 watching)</span></td><td class="act"><button class="btn">watch</button></td></tr>
+  </table>
+</div>
+<aside>
+  <div class="box"><h3>your rating</h3><div class="pad">
+    <div class="rating">1200</div><div class="title">Silver II</div>
+    <div class="meter"><i style="width:0%"></i></div>
+    <div class="dim">100 more points to Gold I · rank #131</div></div></div>
+  <div class="box"><h3>players <span>172 online</span></h3>
+    <div class="tabs"><a class="on" href="#">all</a><a href="#">friends</a><a href="#">top</a></div>
+    <div class="plist"><div><i class="playing"></i><a href="#">mynga95</a><span>2181</span><small>1</small></div><div><i class="lobby"></i><a href="#">anhvu90</a><span>2065</span><small>2</small></div><div><i class="playing"></i><a href="#">ms_lan</a><span>1891</span><small>3</small></div><div><i class="lobby"></i><a href="#">pierre_l</a><span>1812</span><small>4</small></div><div><i class="lobby"></i><a href="#">khoadz</a><span>1705</span><small>5</small></div><div><i class="playing"></i><a href="#">gaucon98</a><span>1658</span><small>6</small></div><div><i class="lobby"></i><a href="#">linhngoc</a><span>1653</span><small>7</small></div><div><i class="lobby"></i><a href="#">acphat1</a><span>1646</span><small>8</small></div><div><i class="watching"></i><a href="#">thinhquang</a><span>1644</span><small>9</small></div><div class="me"><i class="lobby"></i>SunnyOtter21<span>1200</span><small>131</small></div><div><i class="playing"></i><a href="#">camille_b</a><span>1640</span><small>10</small></div><div><i class="playing"></i><a href="#">teacher_mike</a><span>1624</span><small>11</small></div><div><i class="lobby"></i><a href="#">phuongnghia</a><span>1621</span><small>12</small></div><div><i class="playing"></i><a href="#">giangchi92</a><span>1616</span><small>13</small></div><div><i class="playing"></i><a href="#">huyuyen</a><span>1615</span><small>14</small></div><div><i class="playing"></i><a href="#">ateocuimia</a><span>1594</span><small>15</small></div><div><i class="playing"></i><a href="#">nhivu</a><span>1577</span><small>16</small></div><div><i class="playing"></i><a href="#">tunam2k5</a><span>1571</span><small>17</small></div><div><i class="playing"></i><a href="#">timnguyen</a><span>1570</span><small>18</small></div></div>
+    <div class="foot">green: in lobby · orange: playing · blue: watching</div></div>
+</aside>
+</div>
+</section>
+<section class="screen" id="game">
+<div class="top"><div class="in"><div class="brand">lingo<i>play</i></div>
+<nav><a class="on" href="#lobby">tables</a><a href="#">rankings</a><a href="#">daily challenge</a><a href="#">learn</a><a href="#">community</a></nav>
+<div class="me">signed in as <b>SunnyOtter21</b> (1200) <a href="#">go pro</a> <a href="#">log out</a></div></div></div>
+<div class="gwrap">
+  <div class="crumb"><a href="#lobby">&laquo; back to tables</a><b>table 612: Vocabulary Battle</b><span class="dim">Travel, easy, 10 questions, 6s each · 1 watching</span></div>
+  <div><div class="box"><h3>scores <span>round 7 of 10</span></h3><table class="sc" style="border:0"><tr class=""><td>1.</td><td>camille_b <span class="dim">1640</span></td><td>812</td></tr><tr class="you"><td>2.</td><td>You <span class="dim">1200</span></td><td>724</td></tr><tr class=""><td>3.</td><td>nhivu <span class="dim">1577</span></td><td>655</td></tr><tr class=""><td>4.</td><td>tunam2k5 <span class="dim">1571</span></td><td>590</td></tr></table>
+    <div class="pad" style="padding-top:2px"><div class="rounds"><i class="ok"></i><i class="ok"></i><i class="no"></i><i class="ok"></i><i class="ok"></i><i class="ok"></i><i class="now"></i><i class=""></i><i class=""></i><i class=""></i></div><div class="dim" style="margin-top:5px">your answers so far</div></div></div></div>
+  <div class="q"><div class="lab">What does this word mean?</div><div class="word">passport</div>
+    <div class="timer"><i></i></div><div class="opts"><button class="opt"><b>A</b>hành lý</button><button class="opt"><b>B</b>hộ chiếu</button><button class="opt"><b>C</b>bản đồ</button><button class="opt"><b>D</b>khách sạn</button></div>
+    <p class="dim" style="margin:14px 0 0">4 seconds left · camille_b and tunam2k5 have answered</p></div>
+  <div><div class="box"><h3>say something</h3><div class="pad rx"><button class="btn">Good luck!</button><button class="btn">Nice!</button><button class="btn">Awesome!</button><button class="btn">Wow!</button><button class="btn">So close!</button><button class="btn">Too fast!</button><button class="btn">GG!</button><button class="btn">One more round?</button></div></div></div>
+</div>
+</section>
+<!-- mockup navigation, not part of the design -->
+<nav class="mock-switch"><span>A · Clubhouse</span><a href="#lobby">Lobby</a><a href="#game">Game</a><a href="index.html">All mockups</a></nav>
+</body>
+</html>
