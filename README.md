@@ -15,8 +15,15 @@ npm run build    # type-check + production build
 
 - Login screen with **Play as guest** (random name, 1200 rating).
 - Lobby: live room list with filters and search, Quick Play, Create Room, online players (All / Friends / Top Players).
-- Two games: **Vocabulary Battle** (multiple choice) and **Listening Rush** (dictation with pre-rendered neural speech and a browser TTS fallback).
-  Topic, level, rounds, seconds per round and seats are chosen when creating a room.
+- Five games, picked when creating a room along with topic, rounds, seconds per turn and seats:
+  - **Vocabulary Battle** (multiple choice) and **Listening Rush** (dictation): everyone answers the same question at once.
+  - **Spotlight**: one player on stage per turn. Everyone hears the sentence, only that player types, and the table
+    watches every keystroke.
+  - **Hot Seat**: like Spotlight, but a rival picks the sentence (easy, medium or hard) and earns half of whatever
+    the player in the seat misses. The audience can read the sentence, the player cannot.
+  - **Tower Climb**: co-op. Players take turns; a right answer lifts the whole team a floor, a wrong one costs a shared
+    life (3 to start). Floors get harder on the way up, every fifth floor is a checkpoint that gives a life, and the top
+    floor is a boss sentence. The team wins or loses rating together.
 - Quick reactions in every room (no live chat).
 - Ratings (multiplayer Elo), titles from Rookie to Grandmaster, "N more to reach the next title", rankings page.
 - Player stats popup (rating, global rank, win rate, streak, skill ratings, rating history, recent games), challenge and add friend.
@@ -30,6 +37,8 @@ npm run build    # type-check + production build
 - `seed.ts` creates the bots and the guest. `engine.ts` moves the world forward: bots come online and go offline,
   open rooms, take seats, watch games, invite the human and accept friend requests.
 - `rooms.ts` is the game state machine (waiting, countdown, question, reveal, results) plus bot answers and reactions.
+  The turn-based games (Spotlight, Hot Seat, Tower Climb) share one turn engine there; their screens are in
+  `src/screens/party.tsx`.
 - `actions.ts` is everything the human can do. `store.ts` holds the world, saves it to `localStorage`
   (`lingoplay.world.v1`) and replays the time that passed while the tab was closed, so rooms and ratings carry on
   across refreshes. After more than 25 minutes away the lobby is re-dealt instead of replayed.
